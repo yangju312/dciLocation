@@ -1,0 +1,46 @@
+package Gis.namespace.Location;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.widget.ImageView;
+
+public class imageactivity extends Activity {
+	public  ImageView image;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.image);
+		//helper = new DBConnection(Secactivity.this);
+		//final SQLiteDatabase db =GISLocationActivity. helper.getWritableDatabase();
+       //db.delete(UserSchema.TABLE_NAME, null, null);
+		
+		image=(ImageView)findViewById(R.id.imageView);
+		Bitmap bit=BitmapFactory.decodeFile(Secactivity.path);
+		image.setImageBitmap(bit);
+		if(ManageActivity.allActiviy.get("imageactivity")!=null)
+		{
+		ManageActivity.addActiviy("imageactivity", imageactivity.this);
+		}
+	}
+	
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+	}
+}

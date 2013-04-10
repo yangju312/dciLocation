@@ -1,0 +1,66 @@
+10
+
+dir
+5
+http://www.svnchina.com/svn/gislocation/res
+http://www.svnchina.com/svn/gislocation
+
+
+
+2012-11-18T14:32:09.228814Z
+4
+yangju312
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1bcc53dc-f8b4-4350-8129-dd153c89211e
+
+values
+dir
+
+drawable
+dir
+
+values-854x480
+dir
+
+
+
+delete
+
+drawable-hdpi
+dir
+
+drawable-ldpi
+dir
+
+drawable-mdpi
+dir
+
+raw
+dir
+
+drawable-xhdpi
+dir
+
+values-960x540
+dir
+
+
+
+delete
+
+layout
+dir
+

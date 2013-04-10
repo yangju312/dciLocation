@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" 
+android:layout_width="fill_parent" 
+android:background="@drawable/back" 
+android:layout_height="fill_parent"> 
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="15pt" 
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bak"
+        android:gravity="center"
+        android:textColor="@color/txtcc" />
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="10pt" 
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="70dp"
+        
+        android:gravity="center"
+        android:textColor="@color/txtcc" />
+ 
+ <TextView android:id="@+id/message" 
+    android:layout_width="fill_parent" 
+     android:layout_marginLeft="10dp"
+        
+        android:layout_marginRight="10dp"
+        android:layout_height="300dp" 
+         android:singleLine="false"
+         android:textSize="15pt" 
+        android:textColor="@color/txtcc"
+        android:background="@drawable/login_button_nor"
+            android:layout_marginTop="120dp"
+           
+
+/>
+
+ <Button
+     android:id="@+id/button1"
+     android:layout_width="80dp"
+     android:layout_height="40dp"
+     android:layout_alignRight="@+id/message"
+     android:layout_below="@+id/message"
+    
+     android:background="@drawable/login_btn_selector" />
+
+</RelativeLayout>

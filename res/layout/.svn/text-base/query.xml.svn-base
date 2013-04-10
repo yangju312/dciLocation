@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/back"
+    android:orientation="vertical"
+    tools:context=".GISLocationActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/back" >
+
+        <TextView
+            android:id="@+id/te1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/cxtjsz"
+            android:textColor="@color/textcor"
+            android:textSize="20sp" >
+        </TextView>
+       <TextView
+            android:id="@+id/te2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="55dp"
+            android:gravity="center"
+            android:text="@string/xzbglx"
+            android:textColor="@color/textcor"
+            android:textSize="15sp" >
+        </TextView>
+        <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="95dp"
+  android:layout_alignParentRight="true"
+ android:layout_marginRight="10dp"
+         />
+         <TextView
+            android:id="@+id/checkbox1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="135dp"
+            android:gravity="center"
+            android:button="@drawable/cb_check"
+           
+            android:text="@string/xzbh"
+            android:textColor="@color/textcor"
+            android:textSize="15sp" />
+        
+        <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="175dp"
+ android:layout_alignParentRight="true"
+ android:layout_marginRight="10dp"
+         />
+         <TextView
+            android:id="@+id/checkbox2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="215dp"
+            android:gravity="center"
+            android:button="@drawable/cb_check"
+            android:text="@string/xzsjfw"
+            android:textColor="@color/textcor"
+            android:textSize="15sp" />
+
+       <Button  android:id="@+id/databtn1"
+            
+            android:layout_marginLeft="10dp"
+            
+            android:gravity="center"
+             android:layout_width="130dp"
+            android:layout_height="40dp"
+            
+            android:layout_marginTop="245dp"
+             android:textColor="@color/textcor"
+            android:textSize="15sp"
+            android:background="@drawable/back"
+            android:text="@string/xzsj"/>
+
+ <TextView
+     android:layout_width="fill_parent"
+            android:id="@+id/zz"
+            android:layout_marginLeft="10dp"
+           android:layout_height="40dp"
+                  android:layout_alignParentRight="true"
+ android:layout_marginRight="10dp"
+            android:layout_marginTop="245dp"
+            android:gravity="center"
+            android:text="@string/z"
+            android:textColor="@color/textcor"
+            android:textSize="15sp" >
+        </TextView>
+         <Button  android:id="@+id/databtn2"
+          android:layout_width="130dp"
+            android:layout_height="40dp"
+            
+            android:layout_marginTop="245dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+ android:layout_marginRight="10dp"
+             android:textColor="@color/textcor"
+            android:textSize="15sp"
+            android:background="@drawable/back"
+            android:text="@string/xzsj"/>
+          <Button  android:id="@+id/cx"
+              android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="285dp"
+            android:gravity="center"
+             android:layout_alignParentRight="true"
+           android:layout_marginRight="10dp"
+             android:textColor="@color/textcor"
+            android:textSize="20sp"
+            android:background="@drawable/login_bg"
+            android:text="@string/cx"/>
+         
+         
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,313 @@
+package Gis.namespace.Location;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.androidpn.client.ServiceManager;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+
+
+
+
+
+import Gis.namespace.Location.GISLocationActivity.SETIP;
+import Gis.namespace.Location.GISLocationActivity.User;
+import android.R.color;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class LoginActivity  extends Activity{
+	public static String userInfo;
+	EditText accountEt,passwordEt;
+	CheckBox cb;
+	boolean isture =false;
+	 DBConnection helper;
+	 public static String UserName;
+	 public static String Lxfs;
+	 public static int id;
+	 public static String setip;
+	 public static String setdk;
+	 public static File dataf;
+	 private ProgressDialog pd;
+	 boolean isshow=false;
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    setContentView(R.layout.activity_login);
+	    cb=(CheckBox)findViewById(R.id.checkbox);
+	    accountEt=(EditText) findViewById(R.id.et_account);
+	    passwordEt=(EditText) findViewById(R.id.et_password);
+	    Button btnLogin=(Button) findViewById(R.id.btn_login);
+	    Button btnfwq=(Button) findViewById(R.id.sip);
+//	    Button btntx=(Button) findViewById(R.id.stx);
+	    TextView  tv=(TextView) findViewById(R.id.xmmcmc);
+	    tv.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);
+//	    tv.setText("广州市珠江堤防巡查系统");
+	    try
+	    {
+	    	dataf = new File("/sdcard/80/zjdafh");
+	    	SQLiteDatabase db=	SQLiteDatabase.openOrCreateDatabase(dataf, null); 
+//	   helper=new DBConnection(LoginActivity.this);
+//	   SQLiteDatabase db = helper.getWritableDatabase();
+	   Cursor c = db.query(User.TABLE_NAME,  null, null,null,null,null,null);
+	   if(c.getCount()>0)
+	   {
+		 c.moveToFirst();
+		 accountEt.setText(c.getString(1));
+		 passwordEt.setText(c.getString(2));
+	   }
+	  
+	   Cursor c1 = db.query(SETIP.TABLE_NAME,  new String[]{SETIP.IP,SETIP.DK}, null,null,null,null,null);
+	   
+	   if(c1.getCount()>0)
+	   {
+		   isture=true;
+		   c1.moveToFirst();
+		   setip=c1.getString(0);
+		   setdk=c1.getString(1);
+	   }
+	   else
+	   {
+		   setip="192.168.110.32";
+		   setdk="8080";
+		 ContentValues values = new ContentValues();
+	   	values.put(SETIP.IP, setip);
+	   	values.put(SETIP.DK, setdk);
+	   	
+	   	db.insert(SETIP.TABLE_NAME, null, values);
+	   
+	   }
+		db.close();
+		c.close();
+		c1.close();
+//		Intent intent =new Intent(LoginActivity.this,GISLocationActivity.class);
+//		startActivity(intent);
+	    btnLogin.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {
+				
+				if(accountEt.getText().toString().equals("输入帐号") || passwordEt.getText().toString().equals("")||accountEt.getText().toString().equals("")){
+					Toast.makeText(LoginActivity.this, "账号或密码不能为空！", Toast.LENGTH_SHORT).show();
+				}else{
+					ContentValues values = new ContentValues();
+					values.put(User.USER,
+							accountEt.getText().toString());
+					 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataf, null); 
+					    db.delete(User.TABLE_NAME, null, null);
+					if(cb.isChecked())
+						{
+						values.put(User.PASS, passwordEt.getText().toString());
+						db.insert(User.TABLE_NAME, null, values);
+						}
+					else
+					{
+						 db.insert(User.TABLE_NAME, null, values);
+					}
+				    db.close();
+					if(login(accountEt.getText().toString(), passwordEt.getText().toString()))
+					{
+						
+				    if(setip!=null&&setip!="")
+				    {
+				    	
+					Intent intent =new Intent(LoginActivity.this,GISLocationActivity.class);
+					startActivity(intent);
+				    }
+				    else
+				    {
+				    	Toast.makeText(LoginActivity.this, "没设置服务器，请设置！！", Toast.LENGTH_SHORT).show();
+				    }
+					}
+					else
+					{if(!isshow)
+					{
+						Toast.makeText(LoginActivity.this, "账号或密码不正确！", Toast.LENGTH_SHORT).show();
+					}
+					}
+				}
+			}
+	    });
+	   
+	    btnfwq.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {
+//				final EditText inputServer = new EditText(LoginActivity.this);
+				
+				View v = LayoutInflater.from(LoginActivity.this).inflate(R.layout.set, null);
+				final EditText  ipEt=(EditText) v.findViewById(R.id.ip);
+         	    final EditText  dkEt=(EditText)v. findViewById(R.id.duank);
+         	    	ipEt.setText(setip);
+         	    	dkEt.setText(setdk);
+		        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+		        builder.setTitle("服务器设置").setIcon(null).setView(v)
+		                .setNegativeButton("取消", null);
+		        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+
+		            public void onClick(DialogInterface dialog, int which) {
+		            	
+		            	setip=ipEt.getText().toString();
+		            	setdk=dkEt.getText().toString();
+		            	SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataf, null); 
+		            	ContentValues values = new ContentValues();
+		            	values.put(SETIP.IP, setip);
+		            	values.put(SETIP.DK, setdk);
+		            	db.delete(SETIP.TABLE_NAME, null, null);
+		            	db.insert(SETIP.TABLE_NAME, null, values);
+		            	db.close();
+		             }
+		        });
+		        builder.show();
+			}});
+//	    btntx.setOnClickListener(new OnClickListener(){
+//			public void onClick(View arg0) {
+//				 ServiceManager.viewNotificationSettings(LoginActivity.this);
+//			}});
+	    ServiceManager serviceManager = new ServiceManager(this);
+        serviceManager.setNotificationIcon(R.drawable.notification);
+        serviceManager.startService();
+	    ManageActivity.addActiviy("LoginActivity", LoginActivity.this);} catch(Exception e){
+	        e.printStackTrace();
+	        Log.i("result", e.getMessage());
+	    }
+	    
+	}
+	private Handler handler =new Handler(){
+		   @Override
+		   //当有消息发送出来的时候就执行Handler的这个方法
+		   public void handleMessage(Message msg){
+		      super.handleMessage(msg);
+		      //只要执行到这里就关闭对话框
+		      pd.dismiss();
+		   }
+		};
+	boolean login(String a, String p){
+		boolean rturn=false ;
+		HttpClient httpclient = new DefaultHttpClient();
+		String url="http://"+LoginActivity.setip+":"+LoginActivity.setdk
+				+"/androidserver/servlet/LogServlet";
+//		String url=ConfigManager.getInstance().getString("LogServlet");
+	 HttpPost httppost = new HttpPost(url);
+	 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4); 
+	 nameValuePairs.add(new BasicNameValuePair("user", a)); 
+	 nameValuePairs.add(new BasicNameValuePair("password", p)); 
+	 HttpResponse response; 
+	 try {
+		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		 httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 30000);  
+         //请求超时  
+         httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 30000);
+		response=httpclient.execute(httppost); 
+		if (response.getStatusLine().getStatusCode() == 200) {  
+           // 获取返回的数据  
+			isshow=false;
+			HttpEntity resEntity = response.getEntity();
+		if (resEntity != null) {
+//			        System.out.println(EntityUtils.toString(resEntity,"utf-8"));
+			  StringEntity my_entity=new StringEntity(EntityUtils.toString(resEntity), "utf-8");
+			   String result=EntityUtils.toString(my_entity); 
+			   JSONArray jsonArr = new JSONObject(result).getJSONArray("result");
+			   JSONObject jsonObj=(JSONObject)jsonArr.get(0);
+			
+			   Boolean istrue=jsonObj.getBoolean("succ");
+			   UserName=jsonObj.getString("name");
+//			   Lxfs=jsonObj.getString("lxfs");
+			   id=jsonObj.getInt("id");
+			   if(istrue)
+			   {
+				   rturn=true;  
+			   }
+			   Log.i("HttpPost", "HttpPost方式请求成功，返回数据如下：");  
+	           Log.i("result", result); 
+			      }
+
+       } else
+       {  
+           Log.i("HttpPost", "HttpPost方式请求失败");  
+       }  
+		
+	 }
+	  catch(Exception e){
+        e.printStackTrace();
+        Log.i("HttpPost", e.getMessage());  
+        Toast.makeText(LoginActivity.this, "请求超时！请检查IP设置是否正确", Toast.LENGTH_SHORT).show();
+        isshow=true;
+        
+    }
+	 return rturn;
+	}
+	
+	
+
+	    @Override
+	    public void onOptionsMenuClosed(Menu menu) {
+//	        Toast.makeText(this, "选项菜单关闭了", Toast.LENGTH_LONG).show();
+	    }
+
+	    @Override
+	    public boolean onPrepareOptionsMenu(Menu menu) {
+      return true;
+
+	    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	
+	}
+	@Override
+	protected void onStop() {
+		super.onStop();
+//		finish();
+	
+	}
+	
+}

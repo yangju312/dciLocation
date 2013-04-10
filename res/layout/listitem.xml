@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" 
+android:layout_width="fill_parent" 
+android:background="@drawable/bigback" 
+android:layout_height="60dp"
+android:padding="1dp" > 
+<RelativeLayout  android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+  android:background="@drawable/bak"   >
+    <TextView android:id="@+id/user_id" 
+    android:layout_width="90dp" 
+android:layout_height="60dp" 
+android:singleLine="true" 
+android:textSize="12pt" 
+ android:gravity="center"
+android:layout_marginLeft="10dp"
+android:textColor="@color/txtcc"
+            android:layout_marginTop="0dp"
+
+/> 
+ <TextView android:id="@+id/user_bh" 
+    android:layout_width="fill_parent" 
+android:layout_height="25dp" 
+android:singleLine="true" 
+android:textSize="12pt" 
+ android:textColor="@color/txtcc"
+android:layout_marginLeft="100dp"
+            android:layout_marginTop="0dp"
+
+/>  
+
+ <TextView android:id="@+id/user_gc" 
+    android:layout_width="fill_parent" 
+android:layout_height="15dp" 
+android:singleLine="true" 
+android:textSize="8pt" 
+android:textColor="@color/txtcc"
+android:layout_marginLeft="100dp"
+            android:layout_marginTop="25dp"
+ 
+/> 
+ <TextView android:id="@+id/user_sj" 
+    android:layout_width="fill_parent" 
+android:layout_height="15dp" 
+android:singleLine="true" 
+android:textSize="8pt" 
+android:textColor="@color/txtcc"
+android:layout_marginLeft="100dp"
+            android:layout_marginTop="40dp"
+
+/> 
+</RelativeLayout>
+</RelativeLayout>

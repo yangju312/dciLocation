@@ -1,0 +1,191 @@
+package Gis.namespace.Location;
+
+import Gis.namespace.Location.GISLocationActivity.SETIP;
+import Gis.namespace.Location.GISLocationActivity.TBZH;
+import Gis.namespace.Location.GISLocationActivity.User;
+import Gis.namespace.Location.GISLocationActivity.UserSchema;
+import Gis.namespace.Location.GISLocationActivity.DFBG;
+import Gis.namespace.Location.GISLocationActivity.Image;
+import Gis.namespace.Location.GISLocationActivity.WZBH;
+import Gis.namespace.Location.GISLocationActivity.WZJZ;
+import Gis.namespace.Location.GISLocationActivity.WZXP;
+import Gis.namespace.Location.GISLocationActivity.XJBH;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class DBConnection extends SQLiteOpenHelper{
+	private static final String DATABASE_NAME = "LocationDB";
+
+	private static final int DATABASE_VERSION = 1;
+	public DBConnection(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// TODO Auto-generated method stub
+		String sql = "CREATE TABLE IF NOT EXISTS  " + UserSchema.TABLE_NAME + " ("
+				+ UserSchema.ID + " INTEGER primary key autoincrement, "
+				+ UserSchema.Time + "  text, " + UserSchema.LAT
+				+ "  text, " + UserSchema.LON + "  text "
+				+ ");";
+		Log.i("createDB=", sql);
+		String sql1 = "CREATE TABLE IF NOT EXISTS " + DFBG.TABLE_NAME + " ("
+				+ DFBG.ID + "  INTEGER primary key autoincrement,"
+				+ DFBG.BH + "  text,  "
+				+DFBG.TIME+ " text,  " + DFBG.YCQKMC + " text,  "
+				+DFBG.YZCD + " text,  "
+				+DFBG.YCQKBW + " text,  "
+				+DFBG.DLWZ + " text,  "
+				+DFBG.SSGC +  " text,  "
+				+DFBG.TBZHFWL + " text,  "
+				+DFBG.TBZHFWR + " text,  "
+				+DFBG.GCZHFWL + " text, "
+				+DFBG.GCZHFWR + " text, "
+				+DFBG.YCDDDMJGXS + " text, "
+				+DFBG.MS + " text, "
+				+DFBG.YYFX + " text, "
+				+DFBG.JY + " text, "
+				
+				
+						+DFBG.XPSM
+				+ "  text "
+				+ ");";
+		String xjbg = "CREATE TABLE IF NOT EXISTS " + DFBG.TABLENAME + " ("
+				+ DFBG.ID + "  INTEGER primary key autoincrement,"
+				+ DFBG.BH + "  text,  "
+				+DFBG.TIME+ " text,  " + DFBG.YCQKMC + " text,  "
+				+DFBG.YZCD + " text,  "
+				+DFBG.YCQKBW + " text,  "
+				+DFBG.DLWZ + " text,  "
+				+DFBG.SSGC +  " text,  "
+				+DFBG.TBZHFWL + " text,  "
+				+DFBG.TBZHFWR + " text,  "
+				+DFBG.GCZHFWL + " text, "
+				+DFBG.GCZHFWR + " text, "
+				+DFBG.YCDDDMJGXS + " text, "
+				+DFBG.MS + " text, "
+				+DFBG.YYFX + " text, "
+				+DFBG.JY + " text, "
+						+DFBG.XPSM
+				+ "  text "
+				+ ");";
+		String wxjbg1 = "CREATE TABLE IF NOT EXISTS " + WZJZ.TABLE_NAME + " ("
+				+ WZJZ.ID + "  INTEGER primary key autoincrement,"
+				+ WZJZ.BH + "  text,  "
+				+WZJZ.TIME+ " text,  " + WZJZ.YCQKMC + " text,  "
+				+WZJZ.YZCD + " text,  "
+				+WZJZ.YCQKBW + " text,  "
+				+WZJZ.DLWZ + " text,  "
+				+WZJZ.SSGC +  " text,  "
+				+WZJZ.TBZHFWL + " text,  "
+				+WZJZ.TBZHFWR + " text,  "
+				+WZJZ.GCZHFWL + " text, "
+				+WZJZ.GCZHFWR + " text, "
+				+WZJZ.YCDDDMJGXS + " text, "
+				+WZJZ.MS + " text, "
+				+WZJZ.YYFX + " text, "
+				+WZJZ.JY + " text, "
+				+WZJZ.XDY + " text, "
+				+WZJZ.LXDH + " text, "
+						+WZJZ.XPSM 
+				+ "  text "
+				+ ");";
+		String wxjbg = "CREATE TABLE IF NOT EXISTS " + WZJZ.TABLENAME + " ("
+				+ WZJZ.ID + "  INTEGER primary key autoincrement,"
+				+ WZJZ.BH + "  text,  "
+				+WZJZ.TIME+ " text,  " + WZJZ.YCQKMC + " text,  "
+				+WZJZ.YZCD + " text,  "
+				+WZJZ.YCQKBW + " text,  "
+				+WZJZ.DLWZ + " text,  "
+				+WZJZ.SSGC +  " text,  "
+				+WZJZ.TBZHFWL + " text,  "
+				+WZJZ.TBZHFWR + " text,  "
+				+WZJZ.GCZHFWL + " text, "
+				+WZJZ.GCZHFWR + " text, "
+				+WZJZ.YCDDDMJGXS + " text, "
+				+WZJZ.MS + " text, "
+				+WZJZ.YYFX + " text, "
+				+WZJZ.JY + " text, "
+				+WZJZ.XDY + " text, "
+				+WZJZ.LXDH + " text, "
+						+WZJZ.XPSM 
+				+ "  text "
+				+ ");";
+		String sqlimage = "CREATE TABLE IF NOT EXISTS " + Image.TABLE_NAME + " ("
+				+ Image.ID + " INTEGER primary key autoincrement, "
+				+ Image.BH+ " text,"
+				+ Image.XP +"  text "
+				+ ");";
+		String xpfj = "CREATE TABLE IF NOT EXISTS " + Image.TABLENAME + " ("
+				+ Image.ID + " INTEGER primary key autoincrement, "
+				+ Image.BH+ " text,"
+				+ Image.XP +  "  text "
+				+ ");";
+		String wxp = "CREATE TABLE IF NOT EXISTS " + WZXP.TABLENAME + " ("
+				+ WZXP.ID + " INTEGER primary key autoincrement, "
+				+ WZXP.BH+ " text,"
+				+ WZXP.XP + "  text "
+				+ ");";
+		String wxp1 = "CREATE TABLE IF NOT EXISTS " + WZXP.TABLE_NAME + " ("
+				+ WZXP.ID + " INTEGER primary key autoincrement, "
+				+ WZXP.BH+ " text,"
+				+ WZXP.XP + "  text "
+				+ ");";
+		String bhsql="CREATE TABLE IF NOT EXISTS " + XJBH.TABLE_NAME + " ("
+				+ XJBH.ID + " INTEGER primary key autoincrement,"
+				+ XJBH.BH+ "  text,"
+				 + XJBH.NF+ "  text "
+				+ ");";
+		String wbhsql="CREATE TABLE IF NOT EXISTS " + WZBH.TABLE_NAME + " ("
+				+ WZBH.ID + " INTEGER primary key autoincrement,"
+				+ WZBH.BH+ "  text,"
+				 + WZBH.NF+ "  text "
+				+ ");";
+		String dlsql="CREATE TABLE IF NOT EXISTS " + User.TABLE_NAME + " ("
+				+ User.ID + " INTEGER primary key autoincrement,"
+				+ User.USER+ "  text,"
+				 + User.PASS+ "  text "
+				+ ");";
+		String ipsql="CREATE TABLE IF NOT EXISTS " + SETIP.TABLE_NAME + " ("
+				+ SETIP.ID + " INTEGER primary key autoincrement,"
+				+ SETIP.IP+ "  text,"
+				 + SETIP.DK+ "  text "
+				+ ");";
+		String zhsql="CREATE TABLE IF NOT EXISTS " + TBZH.TABLE_NAME + " ("
+				+ TBZH.ID + " INTEGER primary key autoincrement,"
+				+ TBZH.ZH+ "  text,"+ TBZH.X+ "  text,"
+				 + TBZH.Y+ "  text "
+				+ ");";
+		 Log.i("createDB=", sql1);
+		 Log.i("createDB=", sqlimage);
+		 Log.i("createDB=", bhsql);
+		db.execSQL(sql1);
+		db.execSQL(wbhsql);
+		db.execSQL(wxp);
+		db.execSQL(wxp1);
+		db.execSQL(dlsql);
+		db.execSQL(xjbg);
+		db.execSQL(xpfj);
+		db.execSQL(sqlimage);
+		db.execSQL(bhsql);
+		db.execSQL(sql);
+		db.execSQL(zhsql);
+		db.execSQL(ipsql);
+		db.execSQL(wxjbg);
+		db.execSQL(wxjbg1);
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+
+

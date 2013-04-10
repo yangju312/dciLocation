@@ -1,0 +1,756 @@
+package Gis.namespace.Location;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
+import Gis.namespace.Location.GISLocationActivity.DFBG;
+import Gis.namespace.Location.GISLocationActivity.WZJZ;
+
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+
+public class Qureyactivity extends Activity {
+	
+	Spinner spbg;
+	Spinner spbh;
+//	 DBConnection helper;
+	 Button databtn1 = null;
+	 Button databtn2 = null;
+	 Button btncx = null;
+	public static ArrayList<HashMap<String, String>> fillMaps ;
+	public static HashMap<String, String> gettable ;
+	 Calendar c = null;
+	 int index=0;
+	 View v;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.query);
+		
+		spbg=(Spinner)findViewById(R.id.spinner1);
+		spbh=(Spinner)findViewById(R.id.spinner2);
+		
+		databtn1 = (Button) findViewById(R.id.databtn1);
+		databtn2 = (Button) findViewById(R.id.databtn2);
+		btncx = (Button) findViewById(R.id.cx);
+		try{
+		 CharSequence[] list1 = new CharSequence[3];
+		 list1[0]="所有报告";
+		 list1[1]="日常巡查报告";
+//		 list1[2]="违章建设报告";
+		 list1[2]="完工报告";
+		 spbg.setAdapter(new ArrayAdapter<CharSequence>(this,
+			 android.R.layout.simple_spinner_item, list1));
+	
+//		 helper=new DBConnection(Qureyactivity.this);
+		if(true) {
+		 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+		 Cursor c1 = db.query(DFBG.TABLENAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+//		 Cursor c2 = db.query(WZJZ.TABLENAME,  new String[] {WZJZ.SSGC}, null,null,null,null,null);
+//		 Cursor c3 = db.query(DFBG.TABLENAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+		 Cursor c4 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+//		 Cursor c5 = db.query(WZJZ.TABLE_NAME,  new String[] {WZJZ.SSGC}, null,null,null,null,null);
+//		 Cursor c6 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+//		 Cursor c3 = db.query(DFBG.TABLENAME,  new String[] {DFBG.BH}, null,null,null,null,null);
+		 List<String> list = new ArrayList<String>();
+		 c1.moveToFirst();
+//		 c2.moveToFirst();
+//		 c3.moveToFirst();
+		 c4.moveToFirst();
+//		 c5.moveToFirst();
+//		 c6.moveToFirst();
+		 for (int i = 0; i < c1.getCount(); i++) {
+			 if(!list.contains(c1.getString(0)))
+			 {
+				 list.add(c1.getString(0));
+			 }
+			
+			 c1.moveToNext();
+			 }
+//		 for (int i = 0; i < c2.getCount(); i++) {
+//			 if(!list.contains(c2.getString(0)))
+//			 {
+//				 list.add(c2.getString(0));
+//			 }
+//			 c2.moveToNext();
+//			 }
+//		 for (int i = 0; i < c3.getCount(); i++) {
+//			 if(!list.contains(c3.getString(0)))
+//			 {
+//				 list.add(c3.getString(0));
+//			 }
+//			 c3.moveToNext();
+//			 }
+		 for (int i = 0; i < c4.getCount(); i++) {
+			 if(!list.contains(c4.getString(0)))
+			 {
+				 list.add(c4.getString(0));
+			 }
+			
+			 c4.moveToNext();
+			 }
+//		 for (int i = 0; i < c5.getCount(); i++) {
+//			 if(!list.contains(c5.getString(0)))
+//			 {
+//				 list.add(c5.getString(0));
+//			 }
+//			 c5.moveToNext();
+//			 }
+//		 for (int i = 0; i < c6.getCount(); i++) {
+//			 if(!list.contains(c6.getString(0)))
+//			 {
+//				 list.add(c6.getString(0));
+//			 }
+//			 c6.moveToNext();
+//			 }
+		 CharSequence[] lis=getlist(list);
+		 spbh.setAdapter(new ArrayAdapter<CharSequence>(Qureyactivity.this,
+				 android.R.layout.simple_spinner_item, lis));
+		 db.close();
+		   c1.close();
+//		   c2.close();
+//		   c3.close();
+		   c4.close();
+//		   c5.close();
+//		   c6.close();
+		 }
+		
+		 databtn1.setOnClickListener(new View.OnClickListener(){
+	            public void onClick(View v) {
+	            	onCreateDialog(databtn1).show();
+	            }
+	        });
+		 databtn2.setOnClickListener(new View.OnClickListener(){
+	            public void onClick(View v) {
+	            	onCreateDialog(databtn2).show();
+	            }
+	        });
+		 spbg.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+				public void onItemSelected(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					try{
+					SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+					 Cursor c1 = db.query(DFBG.TABLENAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+//					 Cursor c2 = db.query(WZJZ.TABLENAME,  new String[] {WZJZ.SSGC}, null,null,null,null,null);
+//					 Cursor c3 = db.query(DFBG.TABLENAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+					 Cursor c4 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+//					 Cursor c5 = db.query(WZJZ.TABLE_NAME,  new String[] {WZJZ.SSGC}, null,null,null,null,null);
+//					 Cursor c6 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.SSGC}, null,null,null,null,null);
+					String name = ((Spinner)arg0).getSelectedItem().toString();
+					if(name.equals("所有报告"))
+					{
+						 List<String> list = new ArrayList<String>();
+						 c1.moveToFirst();
+//						 c2.moveToFirst();
+//						 c3.moveToFirst();
+						 for (int i = 0; i < c1.getCount(); i++) {
+							 if(!list.contains(c1.getString(0)))
+							 {
+								 list.add(c1.getString(0));
+							 }
+							
+							 c1.moveToNext();
+							 }
+//						 for (int i = 0; i < c2.getCount(); i++) {
+//							 if(!list.contains(c2.getString(0)))
+//							 {
+//								 list.add(c2.getString(0));
+//							 }
+//							 c2.moveToNext();
+//							 }
+//						 for (int i = 0; i < c3.getCount(); i++) {
+//							 if(!list.contains(c3.getString(0)))
+//							 {
+//								 list.add(c3.getString(0));
+//							 }
+//							 c3.moveToNext();
+//							 }
+						 for (int i = 0; i < c4.getCount(); i++) {
+							 if(!list.contains(c4.getString(0)))
+							 {
+								 list.add(c4.getString(0));
+							 }
+							
+							 c4.moveToNext();
+							 }
+//						 for (int i = 0; i < c5.getCount(); i++) {
+//							 if(!list.contains(c5.getString(0)))
+//							 {
+//								 list.add(c5.getString(0));
+//							 }
+//							 c5.moveToNext();
+//							 }
+//						 for (int i = 0; i < c6.getCount(); i++) {
+//							 if(!list.contains(c6.getString(0)))
+//							 {
+//								 list.add(c6.getString(0));
+//							 }
+//							 c6.moveToNext();
+//							 }
+						 CharSequence[] lis=getlist(list);
+						 spbh.setAdapter(new ArrayAdapter<CharSequence>(Qureyactivity.this,
+								 android.R.layout.simple_spinner_item, lis));
+						 
+					}
+					else if(name.equals("日常巡查报告"))
+					{
+						 List<String> list = new ArrayList<String>();
+						 c1.moveToFirst();
+						 for (int i = 0; i < c1.getCount(); i++) {
+							 if(!list.contains(c1.getString(0)))
+							 {
+								 list.add(c1.getString(0));
+							 }
+							
+							 c1.moveToNext();
+							 }
+						 for (int i = 0; i < c4.getCount(); i++) {
+							 if(!list.contains(c4.getString(0)))
+							 {
+								 list.add(c4.getString(0));
+							 }
+							
+							 c4.moveToNext();
+							 }
+						 CharSequence[] lis=getlist(list);
+						 spbh.setAdapter(new ArrayAdapter<CharSequence>(Qureyactivity.this,
+								 android.R.layout.simple_spinner_item, lis));
+					}
+//					else if(name.equals("违章建设报告"))
+//					{
+//						 List<String> list = new ArrayList<String>();
+//						 c2.moveToFirst();
+//						 for (int i = 0; i < c2.getCount(); i++) {
+//							 if(!list.contains(c2.getString(0)))
+//							 {
+//								 list.add(c2.getString(0));
+//							 }
+//							
+//							 c2.moveToNext();
+//							 }
+//						 for (int i = 0; i < c5.getCount(); i++) {
+//							 if(!list.contains(c5.getString(0)))
+//							 {
+//								 list.add(c5.getString(0));
+//							 }
+//							 c5.moveToNext();
+//							 }
+//						 CharSequence[] lis=getlist(list);
+//						 spbh.setAdapter(new ArrayAdapter<CharSequence>(Qureyactivity.this,
+//								 android.R.layout.simple_spinner_item, lis));
+//					}
+					else if(name.equals("完工报告"))
+					{
+						 List<String> list = new ArrayList<String>();
+//						 c3.moveToFirst();
+//						 for (int i = 0; i < c3.getCount(); i++) {
+//							 if(!list.contains(c3.getString(0)))
+//							 {
+//								 list.add(c3.getString(0));
+//							 }
+//							
+//							 c3.moveToNext();
+//							 }
+//						 for (int i = 0; i < c6.getCount(); i++) {
+//							 if(!list.contains(c6.getString(0)))
+//							 {
+//								 list.add(c6.getString(0));
+//							 }
+//							 c6.moveToNext();
+//							 }
+						 CharSequence[] lis=getlist(list);
+						 spbh.setAdapter(new ArrayAdapter<CharSequence>(Qureyactivity.this,
+								 android.R.layout.simple_spinner_item, lis));
+					}
+
+					db.close();
+					c1.close();
+//					c2.close();
+//					c3.close();
+					 c4.close();
+//					   c5.close();
+//					   c6.close();
+					 }
+					 catch(Exception e){
+				        e.printStackTrace();
+				        Log.i("HttpPost", e.getMessage());  
+				    }
+				}
+
+				public void onNothingSelected(AdapterView<?> arg0) {
+					
+					
+				}});
+		
+		 btncx.setOnClickListener(new View.OnClickListener(){
+	            public void onClick(View v) {
+	            	SimpleDateFormat Format = new SimpleDateFormat(  
+			                 "yyyy年MM月dd日");
+	            	index=0;
+	            	String xmgc=spbh.getSelectedItem().toString();
+	            	String bg=spbg.getSelectedItem().toString();
+	            	String sdate=databtn1.getText().toString();
+	            	String edate=databtn2.getText().toString();
+//	            	ArrayList<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
+	            	fillMaps = new ArrayList<HashMap<String, String>>();
+	            	gettable= new HashMap<String, String>();
+	            		try{
+	            			if(fillMaps.size()>0)
+	            			{
+	            				fillMaps.clear();
+	            			}
+	            			if(gettable.size()>0)
+	            			{
+	            				gettable.clear();
+	            				
+	            			}
+						if(bg.equals("所有报告"))
+						{
+							if(sdate.length()==4&&edate.length()==4)
+							{
+								if(xmgc=="所有工程")
+								{	
+									String whereClause=null;
+									doquery(whereClause,fillMaps);
+								}
+								else
+								{
+									String whereClause=DFBG.SSGC+"='"+xmgc+"'";
+									doquery(whereClause,fillMaps);
+									
+								}
+							}
+							else  if(sdate.length()==4&&edate.length()!=4)
+							{
+								if(xmgc=="所有工程")
+							{	
+									String whereClause=DFBG.TIME+"<='"+edate+"'";
+									doquery(whereClause,fillMaps);
+							}
+							else
+							{
+								String whereClause=DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+							    doquery(whereClause,fillMaps);
+								
+							}	
+							}
+							else  if(sdate.length()!=4&&edate.length()==4)
+							{
+								if(xmgc=="所有工程")
+							{	
+									String whereClause=DFBG.TIME+">='"+sdate+"'";
+									doquery(whereClause,fillMaps);
+							}
+							else
+							{
+								String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+							    doquery(whereClause,fillMaps);
+								
+							}
+								
+							}
+							else  if(sdate.length()!=4&&edate.length()!=4)
+							{  
+								
+							if(Format.parse(sdate).after(Format.parse(edate)))
+								{
+								Toast.makeText(Qureyactivity.this, "结束时间不能小于开始时间！", Toast.LENGTH_SHORT).show();
+								return ;
+								}
+							else
+							{
+								if(xmgc=="所有工程")
+								{	
+										String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'";
+										doquery(whereClause,fillMaps);
+								}
+								else
+								{
+									String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+								    doquery(whereClause,fillMaps);
+									
+								}
+							}
+							}
+						}
+						else if(bg.equals("日常巡查报告"))
+						{
+							if(sdate.length()==4&&edate.length()==4)
+							{
+								if(xmgc=="所有工程")
+								{	
+									String whereClause=null;
+									doquery1(whereClause,fillMaps);
+								}
+								else
+								{
+									String whereClause=DFBG.SSGC+"='"+xmgc+"'";
+									doquery1(whereClause,fillMaps);
+									
+								}
+							}
+							else  if(sdate.length()==4&&edate.length()!=4)
+							{
+								if(xmgc=="所有工程")
+							{	
+									String whereClause=DFBG.TIME+"<='"+edate+"'";
+									doquery1(whereClause,fillMaps);
+							}
+							else
+							{
+								String whereClause=DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+							    doquery1(whereClause,fillMaps);
+								
+							}
+								
+							}
+							else  if(sdate.length()!=4&&edate.length()==4)
+							{
+								if(xmgc=="所有工程")
+							{	
+									String whereClause=DFBG.TIME+">='"+sdate+"'";
+									doquery1(whereClause,fillMaps);
+							}
+							else
+							{
+								String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+							    doquery1(whereClause,fillMaps);
+								
+							}
+								
+							}
+							else  if(sdate.length()!=4&&edate.length()!=4)
+							{  
+								
+							if(Format.parse(sdate).after(Format.parse(edate)))
+								{
+								Toast.makeText(Qureyactivity.this, "结束时间不能小于开始时间！", Toast.LENGTH_SHORT).show();
+								return ;
+								}
+							else
+							{
+								if(xmgc=="所有工程")
+								{	
+										String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'";
+										doquery1(whereClause,fillMaps);
+								}
+								else
+								{
+									String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+								    doquery1(whereClause,fillMaps);
+									
+								}
+							}
+							}
+						}
+//						else if(bg.equals("违章建设报告"))
+//						{
+//							if(sdate.length()==4&&edate.length()==4)
+//							{
+//								if(xmgc=="所有工程")
+//								{	
+//									String whereClause=null;
+//									doquery2(whereClause,fillMaps);
+//								}
+//								else
+//								{
+//									String whereClause=DFBG.SSGC+"='"+xmgc+"'";
+//									doquery2(whereClause,fillMaps);
+//									
+//								}
+//							}
+//							else  if(sdate.length()==4&&edate.length()!=4)
+//							{
+//								if(xmgc=="所有工程")
+//							{	
+//									String whereClause=DFBG.TIME+"<='"+edate+"'";
+//									doquery2(whereClause,fillMaps);
+//							}
+//							else
+//							{
+//								String whereClause=DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//							    doquery2(whereClause,fillMaps);
+//								
+//							}
+//								
+//							}
+//							else  if(sdate.length()!=4&&edate.length()==4)
+//							{
+//								if(xmgc=="所有工程")
+//							{	
+//									String whereClause=DFBG.TIME+">='"+sdate+"'";
+//									doquery2(whereClause,fillMaps);
+//							}
+//							else
+//							{
+//								String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//							    doquery2(whereClause,fillMaps);
+//								
+//							}
+//								
+//							}
+//							else  if(sdate.length()!=4&&edate.length()!=4)
+//							{  
+//								
+//							if(Format.parse(sdate).after(Format.parse(edate)))
+//								{
+//								Toast.makeText(Qureyactivity.this, "结束时间不能小于开始时间！", Toast.LENGTH_SHORT).show();
+//								return ;
+//								}
+//							else
+//							{
+//								if(xmgc=="所有工程")
+//								{	
+//										String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'";
+//										doquery2(whereClause,fillMaps);
+//								}
+//								else
+//								{
+//									String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//								    doquery2(whereClause,fillMaps);
+//									
+//								}
+//							}
+//							}
+//							
+//						}
+						else if(bg.equals("完工报告"))
+						{
+//							if(sdate.length()==4&&edate.length()==4)
+//							{
+//								if(xmgc=="所有工程")
+//								{	
+//									String whereClause=null;
+//									doquery3(whereClause,fillMaps);
+//								}
+//								else
+//								{
+//									String whereClause=DFBG.SSGC+"='"+xmgc+"'";
+//									doquery3(whereClause,fillMaps);
+//									
+//								}
+//							}
+//							else  if(sdate.length()==4&&edate.length()!=4)
+//							{
+//								if(xmgc=="所有工程")
+//							{	
+//									String whereClause=DFBG.TIME+"<='"+edate+"'";
+//									doquery3(whereClause,fillMaps);
+//							}
+//							else
+//							{
+//								String whereClause=DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//							    doquery3(whereClause,fillMaps);
+//								
+//							}
+//								
+//							}
+//							else  if(sdate.length()!=4&&edate.length()==4)
+//							{
+//								if(xmgc=="所有工程")
+//							{	
+//									String whereClause=DFBG.TIME+">='"+sdate+"'";
+//									doquery3(whereClause,fillMaps);
+//							}
+//							else
+//							{
+//								String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//							    doquery3(whereClause,fillMaps);
+//								
+//							}
+//								
+//							}
+//							else  if(sdate.length()!=4&&edate.length()!=4)
+//							{  
+//								
+//							if(Format.parse(sdate).after(Format.parse(edate)))
+//								{
+//								Toast.makeText(Qureyactivity.this, "结束时间不能小于开始时间！", Toast.LENGTH_SHORT).show();
+//								return ;
+//								}
+//							else
+//							{
+//								if(xmgc=="所有工程")
+//								{	
+//										String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'";
+//										doquery3(whereClause,fillMaps);
+//								}
+//								else
+//								{
+//									String whereClause=DFBG.TIME+">='"+sdate+"'"+" and "+DFBG.TIME+"<='"+edate+"'"+" and "+DFBG.SSGC+"='"+xmgc+"'";
+//								    doquery3(whereClause,fillMaps);
+//									
+//								}
+//							}
+//							}
+							
+						}
+                        }catch(Exception e){
+					        e.printStackTrace();
+					        Log.i("HttpPost", e.getMessage());  
+					    }
+//	            	 	String[] from=new String[] {"id","bh", "gc","sj"}; 
+//	            	int[] to=new int[] { R.id.user_id, R.id.user_bh,R.id.user_gc,R.id.user_sj};
+//					  SimpleAdapter adapter = new SimpleAdapter(Qureyactivity.this,fillMaps,R.layout.listitem,from,to);
+					   Intent intentwz =new Intent(Qureyactivity.this,Resultactivity.class);
+					     startActivity(intentwz);
+	            }
+	        });
+		 if(ManageActivity.allActiviy.get("Qureyactivity")!=null)
+			{
+		 ManageActivity.addActiviy("Qureyactivity", Qureyactivity.this);
+			}
+		}catch(Exception e){
+	        e.printStackTrace();
+	        Log.i("HttpPost", e.getMessage());  
+	    }
+		
+		}
+	 protected Dialog onCreateDialog(final Button databtn1 ) {
+	        Dialog dialog = null;
+	       
+	    
+	            c = Calendar.getInstance();
+	            dialog = new DatePickerDialog(
+	                this,
+	                new DatePickerDialog.OnDateSetListener() {
+	                    public void onDateSet(DatePicker dp, int year,int month, int dayOfMonth) {
+	                    	databtn1.setText( year + "年" + (month+1) + "月" + gets(dayOfMonth) + "日");
+	                    }
+	                }, 
+	                c.get(Calendar.YEAR), // 传入年份
+	                c.get(Calendar.MONTH), // 传入月份
+	                c.get(Calendar.DAY_OF_MONTH) );// 传入天数
+
+	        return dialog;
+	    }
+	 public String gets(int d)
+	 {
+		 if(d<10)
+		 {return "0"+d;}
+		return d+"";
+			 
+	 }
+	 public void doquery(String whereClause ,List<HashMap<String, String>> fillMaps)
+	 {
+		 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+		 Cursor c1 = db.query(DFBG.TABLENAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+		 Cursor c2 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+//		 Cursor c3 = db.query(WZJZ.TABLENAME,  new String[] {WZJZ.BH,WZJZ.SSGC,WZJZ.TIME}, whereClause,null,null,null,null);
+//		 Cursor c4 = db.query(WZJZ.TABLE_NAME,  new String[] {WZJZ.BH,WZJZ.SSGC,WZJZ.TIME}, whereClause,null,null,null,null);
+//		 Cursor c5 = db.query(DFBG.TABLENAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+//		 Cursor c6 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+		 putstring(c1,fillMaps,DFBG.TABLENAME);
+         putstring(c2,fillMaps,DFBG.TABLE_NAME);
+//         putstring(c3,fillMaps,WZJZ.TABLENAME);
+//         putstring(c4,fillMaps,WZJZ.TABLE_NAME);
+//         putstring(c5,fillMaps,DFBG.TABLENAME);
+//         putstring(c6,fillMaps,DFBG.TABLE_NAME);
+         db.close();
+         c1.close();
+         c2.close();
+//         c3.close();
+//         c4.close();
+//         c5.close();
+//         c6.close();
+	 }
+	 public void doquery1(String whereClause ,List<HashMap<String, String>> fillMaps)
+	 {
+		 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+		 Cursor c1 = db.query(DFBG.TABLENAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+		 Cursor c2 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+         putstring(c1,fillMaps,DFBG.TABLENAME);
+         putstring(c2,fillMaps,DFBG.TABLE_NAME);
+         db.close();
+         c1.close();
+         c2.close();
+	 }
+	 public void doquery2(String whereClause ,List<HashMap<String, String>> fillMaps)
+	 {
+		 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+		 Cursor c3 = db.query(WZJZ.TABLENAME,  new String[] {WZJZ.BH,WZJZ.SSGC,WZJZ.TIME}, whereClause,null,null,null,null);
+		 Cursor c4 = db.query(WZJZ.TABLE_NAME,  new String[] {WZJZ.BH,WZJZ.SSGC,WZJZ.TIME}, whereClause,null,null,null,null);
+         putstring(c3,fillMaps,WZJZ.TABLENAME);
+         putstring(c4,fillMaps,WZJZ.TABLE_NAME);
+         db.close();
+         c3.close();
+         c4.close();
+ 
+	 }
+	 public void doquery3(String whereClause ,List<HashMap<String, String>> fillMaps)
+	 {
+		 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+		 Cursor c5 = db.query(DFBG.TABLENAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+		 Cursor c6 = db.query(DFBG.TABLE_NAME,  new String[] {DFBG.BH,DFBG.SSGC,DFBG.TIME}, whereClause,null,null,null,null);
+//         putstring(c5,fillMaps,DFBG.TABLENAME);
+//         putstring(c6,fillMaps,DFBG.TABLE_NAME);
+         db.close();
+         c5.close();
+         c6.close();
+	 }
+	 public void putstring(Cursor c1,List<HashMap<String, String>> fillMaps,String table)
+	 {
+		 c1.moveToFirst();
+		 
+		 for(int i=0;i<c1.getCount();i++)
+		 {
+			 index++;
+			 HashMap<String, String> map = new HashMap<String, String>();
+	        	map.put("id", "" + index);
+	        	map.put("bh", c1.getString(0));
+	        	map.put("gc", c1.getString(1));
+	        	map.put("sj", c1.getString(2));
+	        	fillMaps.add(map);
+	        	c1.moveToNext();
+	        	gettable.put(index+"",table);
+	        	
+		 }    	
+	 }
+ 	 public CharSequence[] getlist(List<String>  l)
+	 {
+		 CharSequence[] lis= new CharSequence[l.size()+1];
+		 lis[0]="所有工程";
+		 for (int i = 0; i < l.size(); i++) {
+			 lis[i+1] = l.get(i);
+			
+			 }
+		return lis;
+		 
+	 }
+		@Override
+		protected void onDestroy() {
+			super.onDestroy();
+			
+		}
+
+		@Override
+		protected void onPause() {
+			super.onPause();
+		
+		}
+
+		@Override
+		protected void onResume() {
+			super.onResume();
+		
+		}
+}

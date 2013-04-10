@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/gislocation/!svn/ver/3/res/values
+END
+style.xml
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/gislocation/!svn/ver/1/res/values/style.xml
+END
+strings.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/gislocation/!svn/ver/11/res/values/strings.xml
+END
+attrs.xml
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/gislocation/!svn/ver/1/res/values/attrs.xml
+END
+arcgis_ui_strings.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/gislocation/!svn/ver/1/res/values/arcgis_ui_strings.xml
+END
+ids.xml
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/gislocation/!svn/ver/1/res/values/ids.xml
+END

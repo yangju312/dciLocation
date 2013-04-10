@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+     <TableRow   android:id="@+id/TableRow1"
+         android:background="@color/black"
+         android:layout_width="fill_parent"  
+         android:layout_height="40dp">
+         <Button  android:id="@+id/save"
+           
+              android:background="@drawable/bdsave"
+             android:layout_weight="1"
+             android:layout_height="40dp"
+             android:textSize="20sp"
+             android:textColor="@color/white"
+             android:text="@string/save"/>
+         <ImageView
+		android:layout_width="5dp" android:layout_height="fill_parent"
+		android:src="@drawable/back"/>
+         <Button  android:id="@+id/send"
+             android:layout_height="40dp"
+              android:layout_weight="1"
+              android:background="@drawable/bdsave"
+              android:textColor="@color/white"
+              android:textSize="20sp"
+             android:text="@string/send"/>
+         <ImageView
+		android:layout_width="5dp" android:layout_height="fill_parent"
+		android:src="@drawable/back"/>
+         <Button  android:id="@+id/pro"
+             android:layout_height="40dp"
+              android:layout_weight="1"
+            android:background="@drawable/bdsave"
+             android:textColor="@color/white"
+             android:textSize="20sp"
+             android:text="@string/fh"
+             />
+     </TableRow>
+ 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="40dp"
+        android:background="@drawable/back">
+
+        <TextView
+            android:id="@+id/bh"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/bh"
+            android:textColor="@color/txtcc"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/ebh"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@id/bh"
+            android:layout_toRightOf="@id/bh"
+            android:background="@drawable/back"
+            android:height="15dp"
+            android:lines="1"
+            android:textColor="@color/txtcc"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/sj"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/bh"
+            android:text="@string/sj"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" >
+        </TextView>
+
+        <Button
+            android:id="@+id/esj"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_alignTop="@id/sj"
+            android:layout_toRightOf="@id/sj"
+            android:background="@drawable/bak"
+            android:height="15dp"
+            android:lines="1"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/jy"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+             android:layout_below="@id/sj"
+            android:text="@string/bz"
+            android:gravity="left"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/ejy"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/jy"
+            android:singleLine="false"
+            android:height="15dp"
+            android:inputType="textMultiLine"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/xp"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="0dp"
+             android:layout_below="@id/ejy"
+            android:text="@string/xp"
+            android:gravity="left"
+            android:textColor="@color/txtcc"
+            android:textSize="20sp" >
+        </TextView>
+
+      
+
+        <Button
+            android:id="@+id/Carema"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+           android:layout_below="@id/xp"
+            android:text="@string/carema"
+            android:background="@drawable/bak"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/localhost"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_below="@id/xp"
+            android:text="@string/localhost"
+            android:background="@drawable/bak"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+         
+<ListView android:id="@+id/xplist" 
+               android:layout_width="fill_parent" 
+               
+              android:layout_height="300dp"
+                android:drawSelectorOnTop="false" 
+                android:layout_below="@id/localhost"
+                  android:scrollbars="vertical"/>
+       
+    </RelativeLayout>
+
+ 
+</RelativeLayout>

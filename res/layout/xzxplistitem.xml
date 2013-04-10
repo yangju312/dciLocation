@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/back"
+    android:orientation="horizontal"
+    android:padding="1dp" >
+
+
+
+
+<TableRow android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/xz"
+        android:layout_weight="2"
+        android:layout_height="60dp"
+        android:layout_marginTop="0dp"
+       
+        android:background="@drawable/background_login_div_bg"
+        android:gravity="center"
+        android:text="@string/xz"
+        android:textSize="12pt" />
+    
+
+    <TextView
+        android:id="@+id/xpmc"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        
+        android:singleLine="false"
+        android:textColor="@color/txtcc"
+        android:textSize="10pt" />
+     
+</TableRow>
+
+</LinearLayout>

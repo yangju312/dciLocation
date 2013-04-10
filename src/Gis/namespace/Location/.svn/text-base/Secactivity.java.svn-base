@@ -1,0 +1,1453 @@
+package Gis.namespace.Location;
+
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import Gis.namespace.Location.GISLocationActivity.DFBG;
+import Gis.namespace.Location.GISLocationActivity.Image;
+import Gis.namespace.Location.GISLocationActivity.WZJZ;
+import Gis.namespace.Location.GISLocationActivity.XJBH;
+import Gis.namespace.Location.jswzactivity.MyHandler;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class Secactivity extends Activity{
+public static	String path=null;
+private ProgressDialog dialog=null;
+String bb=null;
+	Button btncarema;
+	Button btnlocalhost;
+	Button btndel1;
+	Button btnyl1;
+	Button btndel2;
+	Button btnyl2;
+	Button btndel3;
+	Button btnyl3;
+	Button btndel4;
+	Button btnyl4;
+	Button btndel5;
+	Button btnyl5;
+    String bh=null;
+    String sj=null;
+    String ycqkmc=null;
+    String yzcd=null;
+    String ycqkbw=null;
+    String dlwz=null;
+    String ssxngc=null;
+    String tbzhfwl=null;
+    String tbzhfwr=null;
+    String gczhfwl=null;
+    String gczhfwr=null;
+    String ycdddmjgxs=null;
+    String ms=null;
+    String yyfx=null;
+    String jy=null;
+    String xp1=null;
+    String xp2=null;
+    String xp3=null;
+    String xp4=null;
+    String xp5=null;
+    String xpsm=null;
+    TextView ebh;
+    TextView esj;
+    EditText eycqkmc;
+    EditText eyzcd;
+    EditText eycqkbw;
+    EditText edlwz;
+    EditText essxngc;
+    EditText etbzhfwl;
+    EditText etbzhfwr;
+    EditText egczhfwl;
+    EditText egczhfwr;
+    EditText eycdddmjgxs;
+    EditText ems;
+    EditText eyyfx;
+    EditText ejy;
+    TextView exp1;
+    TextView exp2;
+    TextView exp3;
+    TextView exp4;
+    TextView exp5;
+    TextView txp1;
+    TextView txp2;
+    TextView txp3;
+    TextView  txp4;
+    TextView txp5;
+    EditText expsm;
+    Dictionary<String,String> listxp=new   Hashtable<String,String>();
+//    SQLiteDatabase db;
+//    DBConnection helper;
+    String jtbh=null;
+    String nf=null;
+    String  issend="false";
+	//DBConnection helper;
+	//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		 View v = LayoutInflater.from(Secactivity.this).inflate(R.layout.wzjs, null);
+		 setContentView(v);
+//		setContentView(R.layout.main2);
+		//helper = new DBConnection(Secactivity.this);
+		 try
+	     {
+//		helper=new DBConnection(Secactivity.this);
+//		 db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+       //db.delete(UserSchema.TABLE_NAME, null, null);
+		btncarema=(Button) findViewById(R.id.Carema);
+		btnlocalhost=(Button) findViewById(R.id.localhost);
+		btndel1=(Button) findViewById(R.id.del1);
+		btnyl1=(Button) findViewById(R.id.yl1);
+		btndel2=(Button) findViewById(R.id.del2);
+		btnyl2=(Button) findViewById(R.id.yl2);
+		btndel3=(Button) findViewById(R.id.del3);
+		btnyl3=(Button) findViewById(R.id.yl3);
+		btndel4=(Button) findViewById(R.id.del4);
+		btnyl4=(Button) findViewById(R.id.yl4);
+		btndel5=(Button) findViewById(R.id.del5);
+		btnyl5=(Button) findViewById(R.id.yl5);
+		 ebh=(TextView) findViewById(R.id.ebh);
+	    esj=(TextView) findViewById(R.id.esj);
+	     eycqkmc=(EditText) findViewById(R.id.eycqkmc);
+	     eyzcd=(EditText) findViewById(R.id.eyzcd);
+	     eycqkbw=(EditText) findViewById(R.id.eycqkbw);
+	     edlwz=(EditText) findViewById(R.id.edlwz);
+	     essxngc=(EditText) findViewById(R.id.essxngc);
+	     etbzhfwl=(EditText) findViewById(R.id.etbzhfwl);
+	     etbzhfwr=(EditText) findViewById(R.id.etbzhfwr);
+	     egczhfwl=(EditText) findViewById(R.id.egczhfwl);
+	     egczhfwr=(EditText) findViewById(R.id.egczhfwr);
+	     eycdddmjgxs=(EditText) findViewById(R.id.eycdddmjgxs);
+	    ems=(EditText) findViewById(R.id.ems);
+	     eyyfx=(EditText) findViewById(R.id.eyyfx);
+	     ejy=(EditText) findViewById(R.id.ejy);
+	     exp1=(TextView) findViewById(R.id.exp1);
+	     exp2=(TextView) findViewById(R.id.exp2);
+	     exp3=(TextView) findViewById(R.id.exp3);
+	     exp4=(TextView) findViewById(R.id.exp4);
+	     exp5=(TextView) findViewById(R.id.exp5);
+	     txp1=(TextView) findViewById(R.id.xp1);
+	     txp2=(TextView) findViewById(R.id.xp2);
+	     txp3=(TextView) findViewById(R.id.xp3);
+	     txp4=(TextView) findViewById(R.id.xp4);
+	     txp5=(TextView) findViewById(R.id.xp5);
+	     
+//	     exp1.setVisibility(View.INVISIBLE);
+//	     txp1.setVisibility(View.INVISIBLE);
+//	     btndel1.setVisibility(View.INVISIBLE);
+//	     btnyl1.setVisibility(View.INVISIBLE);
+//	     exp2.setVisibility(View.INVISIBLE);
+//	     txp2.setVisibility(View.INVISIBLE);
+//	     btndel2.setVisibility(View.INVISIBLE);
+//	     btnyl2.setVisibility(View.INVISIBLE);
+//	     exp3.setVisibility(View.INVISIBLE);
+//	     txp3.setVisibility(View.INVISIBLE);
+//	     btndel3.setVisibility(View.INVISIBLE);
+//	     btnyl3.setVisibility(View.INVISIBLE);
+//	     exp4.setVisibility(View.INVISIBLE);
+//	     txp4.setVisibility(View.INVISIBLE);
+//	     btndel4.setVisibility(View.INVISIBLE);
+//	     btnyl4.setVisibility(View.INVISIBLE);
+//	     exp5.setVisibility(View.INVISIBLE);
+//	     txp5.setVisibility(View.INVISIBLE);
+//	     btndel5.setVisibility(View.INVISIBLE);
+//	     btnyl5.setVisibility(View.INVISIBLE);
+	     expsm=(EditText) findViewById(R.id.expsm);
+	     Intent i = getIntent(); 
+	     String ssbh=i.getStringExtra("bh");
+	     String table=i.getStringExtra("table");
+	     issend=i.getStringExtra("issend");
+	     if(table!=null)
+	     {
+	    	 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+	    	 String whereClause1="bh='"+ssbh+"'";
+		     Cursor cur = null;
+		      cur=db.query(table, new String[]{DFBG.BH,DFBG.TIME,DFBG.YCQKMC,DFBG.YZCD,
+		    		  DFBG.YCQKBW,DFBG.DLWZ,DFBG.SSGC,DFBG.TBZHFWL,DFBG.TBZHFWR,DFBG.GCZHFWL,DFBG.GCZHFWR,
+		    		  DFBG.YCDDDMJGXS,DFBG.MS,DFBG.YYFX,DFBG.JY ,DFBG.XPSM},whereClause1, null, null, null, null);
+		      cur.moveToFirst();
+		      ebh.setText(cur.getString(0));
+		      esj.setText(cur.getString(1));
+		      eyzcd.setText(cur.getString(3));
+		      eycqkmc.setText(cur.getString(2));
+		      eycqkbw.setText(cur.getString(4));
+		      edlwz.setText(cur.getString(5));
+		      essxngc.setText(cur.getString(6));
+		      etbzhfwl.setText(cur.getString(7));
+		      etbzhfwr.setText(cur.getString(8));
+		      egczhfwl.setText(cur.getString(9));
+		      egczhfwr.setText(cur.getString(10));
+		      eycdddmjgxs.setText(cur.getString(11));
+		      ems.setText(cur.getString(12));
+		      eyyfx.setText(cur.getString(13));
+		      ejy.setText(cur.getString(14));
+		      expsm.setText(cur.getString(15));
+		      Cursor c=null;
+		      if(issend.equals("false"))
+		      {
+		       c = db.query(Image.TABLE_NAME, new String[]{Image.XP}, whereClause1, null, null, null, null) ;
+
+		      }
+		      else
+		      {
+		    	  c = db.query(Image.TABLENAME, new String[]{Image.XP}, whereClause1, null, null, null, null) ;
+		      }
+		      c.moveToFirst();
+		      for(int k=0;k<c.getCount();k++)
+		      {
+		    	  if(k==0)
+		    	  {
+		    		  exp1.setText(c.getString(0));
+		    		  xp1=c.getString(0);
+	                	listxp.put("1", c.getString(0));
+//	                	exp1.setVisibility(View.VISIBLE);
+//	           	     txp1.setVisibility(View.VISIBLE);
+//	           	     btndel1.setVisibility(View.VISIBLE);
+//	           	     btnyl1.setVisibility(View.VISIBLE);
+		    	  }
+		    	  else if(k==1)
+		    	  {
+		    		  exp2.setText(c.getString(0));
+		    		  xp2=c.getString(0);
+	                	listxp.put("2", c.getString(0));
+//	                	exp2.setVisibility(View.VISIBLE);
+//	           	     txp2.setVisibility(View.VISIBLE);
+//	           	     btndel2.setVisibility(View.VISIBLE);
+//	           	     btnyl2.setVisibility(View.VISIBLE);
+		    	  } 
+		    	  else if(k==2)
+		    	  {
+		    		  exp3.setText(c.getString(0));
+		    		  xp3=c.getString(0);
+	                	listxp.put("3", c.getString(0));
+//	                	exp3.setVisibility(View.VISIBLE);
+//	           	     txp3.setVisibility(View.VISIBLE);
+//	           	     btndel3.setVisibility(View.VISIBLE);
+//	           	     btnyl3.setVisibility(View.VISIBLE);
+		    	  } 
+		    	  else if(k==3)
+		    	  {
+		    		  exp4.setText(c.getString(0));
+		    		  xp4=c.getString(0);
+	                	listxp.put("4", c.getString(0));
+//	                	exp4.setVisibility(View.VISIBLE);
+//	           	     txp4.setVisibility(View.VISIBLE);
+//	           	     btndel4.setVisibility(View.VISIBLE);
+//	           	     btnyl4.setVisibility(View.VISIBLE);
+		    	  } 
+		    	  else if(k==4)
+		    	  {
+		    		  exp5.setText(c.getString(0));
+		    		  xp5=c.getString(0);
+	                	listxp.put("5", c.getString(0));
+//	                	exp5.setVisibility(View.VISIBLE);
+//	           	     txp5.setVisibility(View.VISIBLE);
+//	           	     btndel5.setVisibility(View.VISIBLE);
+//	           	     btnyl5.setVisibility(View.VISIBLE);
+		    	  } 
+		    		c.moveToNext();  
+		      }
+		      db.close();
+		      cur.close();
+		      c.close();
+	     }
+	     else
+	     {
+	    	 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+	    	 issend="false";
+	     Date date = new Date(System.currentTimeMillis());
+	     SimpleDateFormat Forma = new SimpleDateFormat(  
+                 "yyyyMMdd-HHmmss");
+	     String time=Forma.format(date);
+	      nf=time.substring(2,4);
+	     String whereClause1=XJBH.NF+"='"+nf+"'";
+	     Cursor cur = null;
+	    
+	      cur=db.query(XJBH.TABLE_NAME, new String[]{XJBH.BH},whereClause1, null, null, null, null);
+	   	  int cout=cur.getCount()+1;
+	     jtbh=cout+"";
+	    
+	     ebh.setText("XC "+nf+"-"+jtbh);
+	     SimpleDateFormat Format = new SimpleDateFormat(  
+                 "yyyy年MM月dd日");
+	     esj.setText(Format.format(date));
+	     db.close();
+	     cur.close();}
+		btncarema.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//				Intent intent = new Intent(Secactivity.this,CameraPreview.class);  
+				startActivityForResult(intent,1);      
+			}
+		});
+		btnlocalhost.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				  Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);  
+                  getImage.addCategory(Intent.CATEGORY_OPENABLE);  
+                  getImage.setType("image/jpeg");  
+                  startActivityForResult(getImage, 2);  
+			}
+		});
+		btnyl1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				 path= exp1.getText().toString(); 
+				if(path==""){
+					return;}
+				else{
+					Intent intent = new Intent(Secactivity.this,imageactivity.class);
+					startActivity(intent);
+				}
+			}
+		});
+		btnyl2.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				 path= exp2.getText().toString(); 
+				 if(path==""){
+						return;}
+				 else{
+						Intent intent = new Intent(Secactivity.this,imageactivity.class);
+						startActivity(intent);
+				 }
+			}
+		});
+		btnyl3.setOnClickListener(new OnClickListener(){
+	
+			public void onClick(View v) {
+				 path= exp3.getText().toString();   
+			
+				if(path==""){
+					return;}
+				else{
+					Intent intent = new Intent(Secactivity.this,imageactivity.class);
+					startActivity(intent);
+				}
+			
+			}
+		});
+		btnyl4.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				 path= exp4.getText().toString(); 
+				 if(path==""){
+						return;}
+				 else{
+						Intent intent = new Intent(Secactivity.this,imageactivity.class);
+						startActivity(intent);
+				 }
+			}
+		});
+		btnyl5.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				 path= exp5.getText().toString();  
+				 if(path==""){
+						return;}
+				 else{
+						Intent intent = new Intent(Secactivity.this,imageactivity.class);
+						startActivity(intent);}
+				}
+		});
+		btndel1.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				  String s="1";
+				 if(isnull(s))
+				 {
+					 xp1=null;
+					 exp1.setText("");
+				     listxp.remove(s);
+//				     exp1.setVisibility(View.INVISIBLE);
+//				     txp1.setVisibility(View.INVISIBLE);
+//				     btndel1.setVisibility(View.INVISIBLE);
+//				     btnyl1.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
+		btndel2.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				  String s="2";
+				 if(isnull(s))
+				 {
+					 xp2=null;
+					 exp2.setText("");
+				     listxp.remove(s);
+//				     exp2.setVisibility(View.INVISIBLE);
+//				     txp2.setVisibility(View.INVISIBLE);
+//				     btndel2.setVisibility(View.INVISIBLE);
+//				     btnyl2.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
+		btndel3.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				  String s="3";
+				 if(isnull(s))
+				 {
+					 xp3=null;
+					 exp3.setText("");
+				     listxp.remove(s);
+//				     exp3.setVisibility(View.INVISIBLE);
+//				     txp3.setVisibility(View.INVISIBLE);
+//				     btndel3.setVisibility(View.INVISIBLE);
+//				     btnyl3.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
+		btndel4.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				  String s="4";
+				 if(isnull(s))
+				 {
+					 xp4=null;
+					 exp4.setText("");
+				     listxp.remove(s);
+//				     exp4.setVisibility(View.INVISIBLE);
+//				     txp4.setVisibility(View.INVISIBLE);
+//				     btndel4.setVisibility(View.INVISIBLE);
+//				     btnyl4.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
+		btndel5.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				  String s="5";
+				 if(isnull(s))
+				 {
+					 xp5=null;
+					 exp5.setText("");
+				     listxp.remove(s);
+//				     exp5.setVisibility(View.INVISIBLE);
+//				     txp5.setVisibility(View.INVISIBLE);
+//				     btndel5.setVisibility(View.INVISIBLE);
+//				     btnyl5.setVisibility(View.INVISIBLE);
+				 }
+			}
+		});
+//		 Cursor c = db.query(DFBG.TABLE_NAME,  new String[]{DFBG.TIME,DFBG.YCQKMC,DFBG.YZCD,DFBG.YCQKBW,DFBG.DLWZ,DFBG.SSGC,DFBG.TBZHFWL,
+//				 DFBG.TBZHFWR,DFBG.GCZHFWL,DFBG.GCZHFWR,DFBG.YCDDDMJGXS,DFBG.MS,DFBG.YYFX,DFBG.JY}, null,null,null,null,null);
+//		 if(c.getCount()>0)
+//		 {
+//			 c.moveToFirst();
+//			
+//			 esj.setText(c.getString(1));
+//			 eycqkmc.setText(c.getString(2));
+//			 eyzcd.setText(c.getString(3));
+//			 eycqkbw.setText(c.getString(4));
+//			 edlwz.setText(c.getString(5));
+//			 essxngc.setText(c.getString(6));
+//			 etbzhfwl.setText(c.getString(7));
+//			 etbzhfwr.setText(c.getString(8));
+//			 egczhfwl.setText(c.getString(9));
+//			 egczhfwr.setText(c.getString(10));
+//			 eycdddmjgxs.setText(c.getString(11));
+//			 ems.setText(c.getString(12));
+//			 eyyfx.setText(c.getString(13));
+//			 ejy.setText(c.getString(14));
+//			
+//		 }
+//		 Cursor c1 = db.query(Image.TABLE_NAME,  new String[]{Image.XP1,Image.XP2,Image.XP3,Image.XP4,Image.XP5,Image.XPSM}, null,null,null,null,null);
+//		 if(c1.getCount()>0)
+//		 {
+//			 c1.moveToFirst();
+//			 exp1.setText(c1.getString(0));
+//			 exp2.setText(c1.getString(1));
+//			 exp3.setText(c1.getString(2));
+//			 exp4.setText(c1.getString(3));
+//			 exp5.setText(c1.getString(4));
+//			 expsm.setText(c1.getString(5));
+//			
+//			
+//		 }
+//		 db.close();  
+		}
+	     catch (Exception e) {
+        	 Log.i("result", e.toString());
+         }
+
+	}
+	
+	
+	
+
+	@SuppressLint({ "SdCardPath", "SdCardPath" })
+	@Override  
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+	        // TODO Auto-generated method stub  
+	        super.onActivityResult(requestCode, resultCode, data); 
+	        
+	            String sdStatus = Environment.getExternalStorageState();  
+	            if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用  
+	                Log.i("TestFile",  
+	                        "SD card is not avaiable/writeable right now.");  
+	                return;  
+	            } 
+	            if(requestCode==1)
+		        {
+	            	if (resultCode != Activity.RESULT_OK)  
+    	            return;  
+	            Date date = new Date(System.currentTimeMillis());  
+	            SimpleDateFormat dateFormat = new SimpleDateFormat(  
+	                    "_yyyyMMdd-HHmm");
+	            String name=ebh.getText().toString().substring(3)+dateFormat.format(date) + ".jpg";
+	            //	            Toast.makeText(this, name, Toast.LENGTH_LONG).show();  
+//	            byte[] bb = data.getByteArrayExtra("pic"); 
+//	            Bitmap bitmap =null;
+//	            if (bb == null) { return;}
+//	            bitmap= BitmapFactory.decodeByteArray(bb, 0, bb.length);// 获取相机返回的数据，并转换为Bitmap图片格式  
+//	            FileOutputStream b = null;  
+	            
+	            Bundle bundle = data.getExtras();
+				Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+				BufferedOutputStream bos =null;
+
+	           //???????????????????????????????为什么不能直接保存在系统相册位置呢？？？？？？？？？？？？  
+	            File file = new File("/sdcard/xc/");  
+	            file.mkdirs();// 创建文件夹  
+	            String fileName = "/sdcard/xc/"+name; 
+//	            File file1 = new File(fileName); 
+//	            file1.mkdir();
+	            try {  
+	            	bos= new BufferedOutputStream(new FileOutputStream(fileName)); 
+					//b = new FileOutputStream(fileName);
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);// 把数据写入文件
+
+//	                b = new FileOutputStream(fileName); 
+//	                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+	                if(xp1==null||xp1=="")
+	                {
+	                	xp1=fileName;
+	                	exp1.setText(fileName);
+	                	listxp.put("1", fileName);	
+	                	exp1.setVisibility(View.VISIBLE);
+		           	     txp1.setVisibility(View.VISIBLE);
+		           	     btndel1.setVisibility(View.VISIBLE);
+		           	     btnyl1.setVisibility(View.VISIBLE);
+	                }
+	                else
+	                {
+	                	if(xp2==null||xp2=="")
+	                    {
+	                	xp2=fileName;
+	                	exp2.setText(fileName);
+	                	listxp.put("2", fileName);	
+	                	exp2.setVisibility(View.VISIBLE);
+		           	     txp2.setVisibility(View.VISIBLE);
+		           	     btndel2.setVisibility(View.VISIBLE);
+		           	     btnyl2.setVisibility(View.VISIBLE);
+	                      }
+	                	 else
+	 	                {
+	 	                	if(xp3==null||xp3=="")
+	 	                    {
+	 	                	xp3=fileName;
+	 	                	exp3.setText(fileName);
+	 	                	listxp.put("3", fileName);	
+	 	                	exp3.setVisibility(View.VISIBLE);
+	 		           	     txp3.setVisibility(View.VISIBLE);
+	 		           	     btndel3.setVisibility(View.VISIBLE);
+	 		           	     btnyl3.setVisibility(View.VISIBLE);
+	 	                      }
+	 	                	 else
+	 		                {
+	 		                	if(xp4==null||xp4=="")
+	 		                    {
+	 		                	xp4=fileName;
+	 		                	exp4.setText(fileName);
+	 		                	listxp.put("4", fileName);	
+	 		                	exp4.setVisibility(View.VISIBLE);
+	 			           	     txp4.setVisibility(View.VISIBLE);
+	 			           	     btndel4.setVisibility(View.VISIBLE);
+	 			           	     btnyl4.setVisibility(View.VISIBLE);
+	 		                      }
+	 		                	 else
+	 			                {
+	 			                	if(xp5==null||xp5=="")
+	 			                    {
+	 			                	xp5=fileName;
+	 			                	exp5.setText(fileName);
+	 			                	listxp.put("5", fileName);	
+	 			                	exp5.setVisibility(View.VISIBLE);
+	 				           	     txp5.setVisibility(View.VISIBLE);
+	 				           	     btndel5.setVisibility(View.VISIBLE);
+	 				           	     btnyl5.setVisibility(View.VISIBLE);
+	 			                      }
+	 			                	else
+	 			                	{
+	 			                		Toast.makeText(this, "五张相片已满！", Toast.LENGTH_LONG).show();
+	 			                	}
+	 			                	
+	 			                }
+	 		                	
+	 		                }
+	 	                	
+	 	                }
+	                	
+	                }
+	                
+	            } catch (FileNotFoundException e) {  
+	                e.printStackTrace();  
+	            } finally {  
+	                try {  
+	                    bos.flush();  
+	                    bos.close();  
+	                } catch (IOException e) {  
+	                    e.printStackTrace();  
+	                }  
+	            }  
+		        }
+	            if(requestCode==2)
+	            {
+	            	if (resultCode != RESULT_OK)  
+	    	            return;  
+	    	   
+	            	String uri=data.getData().getPath();
+	            	String fileName=uri.substring(4);
+	            	
+	            	 if(xp1==null||xp1=="")
+		                {
+		                	xp1=fileName;
+		                	exp1.setText(fileName);
+		                	listxp.put("1", fileName);	
+		                	exp1.setVisibility(View.VISIBLE);
+			           	     txp1.setVisibility(View.VISIBLE);
+			           	     btndel1.setVisibility(View.VISIBLE);
+			           	     btnyl1.setVisibility(View.VISIBLE);
+		                }
+		                else
+		                {
+		                	if(xp2==null||xp2=="")
+		                    {
+		                	xp2=fileName;
+		                	exp2.setText(fileName);
+		                	listxp.put("2", fileName);	
+		                	exp2.setVisibility(View.VISIBLE);
+			           	     txp2.setVisibility(View.VISIBLE);
+			           	     btndel2.setVisibility(View.VISIBLE);
+			           	     btnyl2.setVisibility(View.VISIBLE);
+		                      }
+		                	 else
+		 	                {
+		 	                	if(xp3==null||xp3=="")
+		 	                    {
+		 	                	xp3=fileName;
+		 	                	exp3.setText(fileName);
+		 	                	listxp.put("3", fileName);
+		 	                	exp3.setVisibility(View.VISIBLE);
+		 		           	     txp3.setVisibility(View.VISIBLE);
+		 		           	     btndel3.setVisibility(View.VISIBLE);
+		 		           	     btnyl3.setVisibility(View.VISIBLE);
+		 	                      }
+		 	                	 else
+		 		                {
+		 		                	if(xp4==null||xp4=="")
+		 		                    {
+		 		                	xp4=fileName;
+		 		                	exp4.setText(fileName);
+		 		                	listxp.put("4", fileName);
+		 		                	exp4.setVisibility(View.VISIBLE);
+		 			           	     txp4.setVisibility(View.VISIBLE);
+		 			           	     btndel4.setVisibility(View.VISIBLE);
+		 			           	     btnyl4.setVisibility(View.VISIBLE);
+		 		                      }
+		 		                	 else
+		 			                {
+		 			                	if(xp5==null||xp5=="")
+		 			                    {
+		 			                	xp5=fileName;
+		 			                	exp5.setText(fileName);
+		 			                	listxp.put("5", fileName);
+		 			                	exp5.setVisibility(View.VISIBLE);
+		 				           	     txp5.setVisibility(View.VISIBLE);
+		 				           	     btndel5.setVisibility(View.VISIBLE);
+		 				           	     btnyl5.setVisibility(View.VISIBLE);
+		 			                      }
+		 			                	else
+		 			                	{
+		 			                		Toast.makeText(this, "五张相片已满！", Toast.LENGTH_LONG).show();
+		 			                	}
+		 			                	
+		 			                }
+		 		                	
+		 		                }
+		 	                	
+		 	                }
+		                }
+	            }
+	            if(ManageActivity.allActiviy.get("Secactivity")!=null)
+	    		{
+	            ManageActivity.addActiviy("Secactivity", Secactivity.this);}
+	        }  
+	      
+
+	 
+	 
+	 
+		@Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+       /*
+        * 
+        * add()方法的四个参数，依次是：
+        * 
+        * 1、组别，如果不分组的话就写Menu.NONE,
+        * 
+        * 2、Id，这个很重要，Android根据这个Id来确定不同的菜单
+        * 
+        * 3、顺序，那个菜单现在在前面由这个参数的大小决定
+        * 
+        * 4、文本，菜单的显示文本
+        */
+
+       // setIcon()方法为菜单设置图标，这里使用的是系统自带的图标，同学们留意一下,以
+
+       // android.R开头的资源是系统提供的，我们自己提供的资源是以R开头的
+
+       menu.add(Menu.NONE, Menu.FIRST + 1, 1, "保存").setIcon(
+
+       android.R.drawable.ic_menu_edit);
+
+       menu.add(Menu.NONE, Menu.FIRST + 2, 2, "发送").setIcon(
+
+       android.R.drawable.ic_menu_send);
+
+       return true;
+
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+	   
+	   
+		bh=ebh.getText().toString();
+		  sj=esj.getText().toString();
+       ycqkmc=eycqkmc.getText().toString();
+       yzcd=eyzcd.getText().toString();
+       ycqkbw=eycqkbw.getText().toString();
+       dlwz=edlwz.getText().toString();
+       ssxngc=essxngc.getText().toString();
+       tbzhfwl=etbzhfwl.getText().toString();
+       tbzhfwr=etbzhfwr.getText().toString();
+       gczhfwl=egczhfwl.getText().toString();
+       gczhfwr=egczhfwr.getText().toString();
+       ycdddmjgxs=eycdddmjgxs.getText().toString();
+       ms=ems.getText().toString();
+       yyfx=eyyfx.getText().toString();
+       jy=ejy.getText().toString();
+       xp1=exp1.getText().toString();
+       xp2=exp2.getText().toString();
+       xp3=exp3.getText().toString();
+       xp4=exp4.getText().toString();
+       xp5=exp5.getText().toString();
+       xpsm=expsm.getText().toString();
+       //       String surl=ConfigManager.getInstance().getString("DFBGServlet");
+       if(bh==null||bh==""||bh.equals(""))
+       {
+       Toast.makeText(this, "编号不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(sj==null||sj==""||sj.equals(""))
+       {
+       Toast.makeText(this, "时间不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(ycqkmc==null||ycqkmc==""||ycqkmc.equals(""))
+       {
+       Toast.makeText(this, "异常情况名称不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(yzcd==null||yzcd==""||yzcd.equals(""))
+       {
+       Toast.makeText(this, "严重程度不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(ycqkbw==null||ycqkbw==""||ycqkbw.equals(""))
+       {
+       Toast.makeText(this, "异常情况部位不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(dlwz==null||dlwz==""||dlwz.equals(""))
+       {
+       Toast.makeText(this, "地理位置不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(ssxngc==null||ssxngc==""||ssxngc.equals(""))
+       {
+       Toast.makeText(this, "所属项目工程不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(tbzhfwl==null||tbzhfwl==""||tbzhfwl.equals(""))
+       {
+       Toast.makeText(this, "统编桩号起始范围不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(tbzhfwr==null||tbzhfwr==""||tbzhfwr.equals(""))
+       {
+       Toast.makeText(this, "统编桩号终止范围不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(ycdddmjgxs==null||ycdddmjgxs==""||ycdddmjgxs.equals(""))
+       {
+       Toast.makeText(this, "异常堤段断面结构形式不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(ms==null||ms==""||ms.equals(""))
+       {
+       Toast.makeText(this, "描述不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(yyfx==null||yyfx==""||yyfx.equals(""))
+       {
+       Toast.makeText(this, "原因分析不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(jy==null||jy==""||jy.equals(""))
+       {
+       Toast.makeText(this, "建议不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       if(xpsm==null||xpsm==""||xpsm.equals(""))
+       {
+       Toast.makeText(this, "巡堤组长不能为空！", Toast.LENGTH_LONG).show();
+       return false;
+       }
+       switch (item.getItemId()) {
+
+       case Menu.FIRST + 1:
+    	   try{
+    		  String g= bh.substring(0, 2);
+    		  if(!g.equals("XC"))
+    		  {
+    			  MessageBox.createAlertDialog("提示", "此编号已发送过！", "返回", this).show();
+    			  return false;
+    		  }
+    		  SQLiteDatabase  db =SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+           Cursor c = db.query(DFBG.TABLE_NAME,  new String[]{DFBG.BH}, null,null,null,null,null);
+		   c.moveToFirst();
+		   List<String> list=new ArrayList<String>();
+		   for (int i = 0; i < c.getCount(); i++) {
+		       list.add(c.getString(0));
+		       c.moveToNext();
+		   }
+		   c.close();
+//		   db.close();
+		   ContentValues values = new ContentValues();
+		   
+			values.put(DFBG.BH,bh);
+			values.put(DFBG.TIME,sj);
+			values.put(DFBG.YCQKMC,ycqkmc);
+			values.put(DFBG.YZCD,yzcd);
+			values.put(DFBG.YCQKBW,ycqkbw);
+			values.put(DFBG.DLWZ,dlwz);
+			values.put(DFBG.SSGC,ssxngc);
+			values.put(DFBG.TBZHFWL,tbzhfwl);
+			values.put(DFBG.TBZHFWR,tbzhfwr);
+			values.put(DFBG.GCZHFWL,gczhfwl);
+			values.put(DFBG.GCZHFWR,gczhfwr);
+			values.put(DFBG.YCDDDMJGXS,ycdddmjgxs);
+			values.put(DFBG.MS,ms);
+			values.put(DFBG.YYFX,yyfx);
+			values.put(DFBG.JY,jy);
+//			values.put(DFBG.XDY,LoginActivity.UserName);
+			
+			values.put(DFBG.XPSM,xpsm);
+			if(listxp.size()>0)
+			{
+//				SQLiteDatabase db= SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+				String where=Image.BH+"='"+bh+"'";
+				db.delete(Image.TABLE_NAME, where, null);
+				db.close();
+			}
+			 Enumeration<String> en = listxp.keys();
+      	      while(en.hasMoreElements()){
+//      	    	db= SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+                String ele = listxp.get((String) en.nextElement());
+                ContentValues imagevalues = new ContentValues();
+                imagevalues.put(Image.BH, bh);
+    			imagevalues.put(Image.XP, ele);
+    			 db.insert(Image.TABLE_NAME, null, imagevalues);
+    			 db.close();
+                }
+			
+			
+		   if(list.contains(bh))
+		   {
+//			   db= SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+				String whereClause=DFBG.BH+"='"+bh+"'";
+				
+			    db.update(DFBG.TABLE_NAME, values, whereClause, null);
+				
+				db.close();
+		   }
+		   else
+		   { 
+//			   db=SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+			   db.insert(DFBG.TABLE_NAME, null, values);
+			   Cursor c11 = db.query(DFBG.TABLE_NAME,  new String[]{DFBG.BH}, null,null,null,null,null);
+			   int ss=c11.getCount();
+				db.close();
+		   }
+		   db.close();
+    	   }
+       catch (Exception e) {
+      	 Log.i("result", e.toString());
+       }
+           break;
+
+       case Menu.FIRST + 2:
+              {
+//    	   Map<String, String> par=new HashMap<String, String>();
+//    	  
+//    	   par.put("sj", sj);
+//    	   par.put("ycqkmc", ycqkmc);
+//    	   par.put("yzcd", yzcd);
+//    	   par.put("ycqkbw", ycqkbw);
+//    	   par.put("dlwz", dlwz);
+//    	   par.put("ssxngc", ssxngc);
+//    	   par.put("tbzhfwl", tbzhfwl);
+//    	   par.put("tbzhfwr", tbzhfwr);
+//    	   par.put("gczhfwl", gczhfwl);
+//    	   par.put("gczhfwr", gczhfwr);
+//    	   par.put("ycdddmjgxs", ycdddmjgxs);
+//    	   par.put("ms", ms);
+//    	   par.put("yyfx", yyfx);
+//    	   par.put("jy", jy);
+////    	   par.put("xp1", xp1.substring(xp1.lastIndexOf('/')+1));
+////    	   par.put("xp2",  xp2.substring(xp2.lastIndexOf('/')+1));
+////    	   par.put("xp3", xp3.substring(xp3.lastIndexOf('/')+1));
+////    	   par.put("xp4",xp4.substring(xp4.lastIndexOf('/')+1));
+////    	   par.put("xp5", xp5.substring(xp5.lastIndexOf('/')+1));
+//    	   par.put("xpsm", xpsm);
+//
+//		 String end = "\r\n";
+//			
+//         String twoHyphens = "--";
+//
+//         String boundary = "*****";
+//
+//         try {
+//
+//        	 URL url = new URL(surl);
+//
+//
+//             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//             con.addRequestProperty("Accept-Charset", "GB2312;");
+//            
+//             /* 允许Input、Output，不使用Cache */
+//
+//             con.setDoInput(true);
+//
+//             con.setDoOutput(true);
+//
+//             con.setUseCaches(false);
+//
+//             // 设置http连接属性
+//
+//             con.setRequestMethod("POST");
+//
+//             con.setRequestProperty("Connection", "Keep-Alive");
+//
+//             con.setRequestProperty("Charset", "UTF-8");
+//
+//             con.setRequestProperty("Content-Type",
+//
+//                     "multipart/form-data;boundary=" + boundary);
+//
+//             DataOutputStream ds = new DataOutputStream(con.getOutputStream());
+//
+//             ds.writeBytes(twoHyphens + boundary + end);
+//             StringBuilder sb=new StringBuilder(); 
+//             for(Entry<String, String> entry :par.entrySet()) {//构建表单字段内容 
+//
+//            	sb.append(twoHyphens); 
+//
+//            	sb.append(boundary); 
+//
+//            	sb.append("\r\n"); 
+//
+//            	sb.append("Content-Disposition: form-data; name=\""+entry.getKey()+"\"\r\n\r\n"); 
+//
+//            	sb.append(entry.getValue()); 
+//
+//            	sb.append("\r\n"); 
+//
+//            	} 
+//             
+//             ds.write(sb.toString().getBytes());
+//             
+//             Enumeration<String> en = listxp.keys();
+//       	      while(en.hasMoreElements()){
+//                 String ele = listxp.get((String) en.nextElement());
+//                 int index =ele.lastIndexOf('/');
+//                 String newName=ele.substring(index+1);
+//                 ds.writeBytes(twoHyphens + boundary + end);
+//                 ds.writeBytes("Content-Disposition: form-data; "
+//                		 
+//                     + "name=\"file1\";filename=\"" + newName + "\"" + end);
+// ds.writeBytes("Content-Type: application/octet-stream; charset=UTF-8" + end);
+//                 ds.writeBytes(end);
+//                 FileInputStream fStream = new FileInputStream(ele);
+//
+//                 /* 设置每次写入1024bytes */
+//
+//                 int bufferSize = 1024;
+//
+//                 byte[] buffer = new byte[bufferSize];
+//
+//                 int length = 0;
+//
+//                 /* 从文件读取数据至缓冲区 */
+//
+//                 while ((length = fStream.read(buffer)) != -1) {
+//
+//                     /* 将资料写入DataOutputStream中 */
+//
+//                     ds.write(buffer, 0, length);
+//
+//                 }
+//
+//                 ds.writeBytes(end);
+//
+//                 fStream.close();
+//                 }  
+//              ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
+//       	      ds.flush();
+//       	   ds.close();
+//       	   /* 取得Response内容 */
+//       	   int kode=con.getResponseCode();
+//       	 Log.i("result", con.getResponseCode()+"");
+//        if(kode==200)
+//         {
+//       	    InputStream is = con.getInputStream();
+//
+//       	    int ch;
+//
+//       	    StringBuffer b = new StringBuffer();
+//
+//       	    while ((ch = is.read()) != -1) {
+//
+//       	        b.append((char) ch);
+//
+//       	    }
+//       	    String s=new String(b.toString().getBytes(),"utf-8");
+//       	     Log.i("result", "Response内容"+s);
+//       	    String bb="巡检"+s.substring(s.lastIndexOf(" "));
+//       	    Log.i("result", "Response内容"+bb);
+//       	    ebh.setText(bb);
+//           ContentValues values = new ContentValues();
+//		  	
+//			values.put(DFBG.BH,bb);
+//			values.put(DFBG.TIME,sj);
+//			values.put(DFBG.YCQKMC,ycqkmc);
+//			values.put(DFBG.YZCD,yzcd);
+//			values.put(DFBG.YCQKBW,ycqkbw);
+//			values.put(DFBG.DLWZ,dlwz);
+//			values.put(DFBG.SSGC,ssxngc);
+//			values.put(DFBG.TBZHFWL,tbzhfwl);
+//			values.put(DFBG.TBZHFWR,tbzhfwr);
+//			values.put(DFBG.GCZHFWL,gczhfwl);
+//			values.put(DFBG.GCZHFWR,gczhfwr);
+//			values.put(DFBG.YCDDDMJGXS,ycdddmjgxs);
+//			values.put(DFBG.MS,ms);
+//			values.put(DFBG.YYFX,yyfx);
+//			values.put(DFBG.JY,jy);
+//			values.put(DFBG.XDY,bh);
+//			values.put(DFBG.LXDH,bh);
+//			values.put(DFBG.XPSM,xpsm);
+//			 Enumeration<String> en1 = listxp.keys();
+//     	      while(en1.hasMoreElements()){
+//     	    	db= helper.getWritableDatabase();
+//               String ele = listxp.get((String) en1.nextElement());
+//               ContentValues imagevalues = new ContentValues();
+//               imagevalues.put(Image.BH, bh);
+//   			imagevalues.put(Image.XP, ele);
+//   			 db.insert(Image.TABLENAME, null, imagevalues);
+//   			 db.close();
+//               }
+//		
+//       	 con.disconnect();
+//       	 db= helper.getWritableDatabase();
+//       	 db.insert(DFBG.TABLENAME, null, values);
+//       	
+//       	 ContentValues xjbh = new ContentValues();
+//       	 xjbh.put(XJBH.NF, nf);
+//       	 xjbh.put(XJBH.BH, jtbh);
+//       	 db.insert(XJBH.TABLE_NAME, null, xjbh);
+//       	 db.close();
+//       	 }//       	   MessageBox.createAlertDialog("提示", "发送成功！", "返回", this).show();
+//         }catch (Exception e) {
+//        	 Log.i("result", e.toString());
+//         }
+//		
+    	   if(issend.equals("false")){
+    	    	  
+//    			
+    	         HandlerThread handlerThread1=new HandlerThread("handler_thread");
+    	         handlerThread1.start();
+    	         
+    	         MyHandler handler1=new MyHandler(handlerThread1.getLooper());
+    	         Message msg=handler1.obtainMessage();
+    	       handler1.sendMessage(msg);
+    	       dialog=new ProgressDialog(Secactivity.this);
+    	       dialog.setTitle("正在发送...");
+    	       dialog.setMessage("请稍候");
+    	        dialog.show();     
+    	           }
+    	              else
+    	              {
+    	            	  MessageBox.createAlertDialog("提示", "此编号已发送过！", "返回", this).show();
+    	              }
+    	 
+           }
+           break;
+       }
+       return false;
+
+   }
+
+
+public Bitmap getimage(String path) throws IOException
+{  
+//	File f=new File(path);
+//	OutputStream out=new FileOutputStream(f);
+//	 byte[] bb =null;
+//	out.write(bb);
+	Bitmap bit=BitmapFactory.decodeFile(path);
+	return bit;
+	}
+//public String getimage(String i) throws UnsupportedEncodingException
+//  { 
+//	  Enumeration<String> en = listxp.keys();
+//	  while(en.hasMoreElements()){
+//          String ele = (String) en.nextElement();
+//          if(ele==i)
+//          {
+//
+//        	  Bitmap bit=listxp.get(i);
+//        	  ByteArrayOutputStream out = new ByteArrayOutputStream();   
+//        	    bit.compress(Bitmap.CompressFormat.JPEG, 100, out);  
+//        	  byte[] b=out.toByteArray();
+//        	  String map=new String(out.toByteArray(),"Unicode");
+//        	  
+//        	  byte[] d = map.getBytes("Unicode");
+//        	  return map;
+//        	  
+//          }
+//       }
+//  
+//	return null;
+//  }
+//  
+public Boolean isnull(String i) 
+{ 
+  Enumeration<String> en = listxp.keys();
+  while(en.hasMoreElements()){
+      String ele = (String) en.nextElement();
+      if(ele==i)
+      {
+    	  return true; 
+      }
+   }
+return false;
+}
+//public String getBitmapByte(Bitmap bitmap){   
+//    ByteArrayOutputStream out = new ByteArrayOutputStream();   
+//    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);   
+////    try {   
+////        out.flush();   
+////        out.close();   
+////    } catch (IOException e) {   
+////        e.printStackTrace();   
+////    }   
+//     String m=new String(out.toByteArray(),"ISO-8859-1"); 
+//     return m;  
+//}  
+
+//public String bytes2HexString(byte[] b) {  
+//	  String ret = "";  
+//	  for (int i = 0; i < b.length; i++) {  
+//	   String hex = Integer.toHexString(b[ i ] & 0xFF);  
+//	   if (hex.length() == 1) {  
+//	    hex = '0' + hex;  
+//	   }  
+//	   ret += hex.toUpperCase();  
+//	  }  
+//	  return ret;  
+//	}  
+   @Override
+   public void onOptionsMenuClosed(Menu menu) {
+//       Toast.makeText(this, "选项菜单关闭了", Toast.LENGTH_LONG).show();
+   }
+
+   @Override
+   public boolean onPrepareOptionsMenu(Menu menu) {
+//       Toast.makeText(this,
+//               "选项菜单显示之前onPrepareOptionsMenu方法会被调用，你可以用此方法来根据打当时的情况调整菜单",
+//               Toast.LENGTH_LONG).show();
+
+       // 如果返回false，此方法就把用户点击menu的动作给消费了，onCreateOptionsMenu方法将不会被调用
+
+       return true;
+
+   }
+	 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+	}
+	   class MyHandler extends Handler {
+		     
+		     public MyHandler(Looper looper){
+		      super(looper);
+		     }
+		     @Override
+		  public void handleMessage(Message msg) {
+		   // TODO Auto-generated method stub
+		   super.handleMessage(msg);
+		   {  String surl="http://"+LoginActivity.setip+":"+LoginActivity.setdk+"/androidserver/servlet/DFBGServlet";
+	    	   Map<String, String> par=new HashMap<String, String>();
+	    	  
+	    	   par.put("sj", sj);
+	    	   par.put("ycqkmc", ycqkmc);
+	    	   par.put("yzcd", yzcd);
+	    	   par.put("ycqkbw", ycqkbw);
+	    	   par.put("dlwz", dlwz);
+	    	   par.put("ssxngc", ssxngc);
+	    	   par.put("tbzhfwl", tbzhfwl);
+	    	   par.put("tbzhfwr", tbzhfwr);
+	    	   par.put("gczhfwl", gczhfwl);
+	    	   par.put("gczhfwr", gczhfwr);
+	    	   par.put("ycdddmjgxs", ycdddmjgxs);
+	    	   par.put("ms", ms);
+	    	   par.put("yyfx", yyfx);
+	    	   par.put("jy", jy);
+	    	   par.put("xdy", LoginActivity.UserName);
+//	    	   par.put("xp1", xp1.substring(xp1.lastIndexOf('/')+1));
+//	    	   par.put("xp2",  xp2.substring(xp2.lastIndexOf('/')+1));
+//	    	   par.put("xp3", xp3.substring(xp3.lastIndexOf('/')+1));
+//	    	   par.put("xp4",xp4.substring(xp4.lastIndexOf('/')+1));
+//	    	   par.put("xp5", xp5.substring(xp5.lastIndexOf('/')+1));
+	    	   par.put("xpsm", xpsm);
+
+			 String end = "\r\n";
+				
+	         String twoHyphens = "--";
+
+	         String boundary = "*****";
+
+	         try {
+
+	        	 URL url = new URL(surl);
+
+
+	             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	             con.addRequestProperty("Accept-Charset", "GB2312;");
+	            
+	             /* 允许Input、Output，不使用Cache */
+
+	             con.setDoInput(true);
+
+	             con.setDoOutput(true);
+
+	             con.setUseCaches(false);
+
+	             // 设置http连接属性
+
+	             con.setRequestMethod("POST");
+
+	             con.setRequestProperty("Connection", "Keep-Alive");
+
+	             con.setRequestProperty("Charset", "UTF-8");
+
+	             con.setRequestProperty("Content-Type",
+
+	                     "multipart/form-data;boundary=" + boundary);
+
+	             DataOutputStream ds = new DataOutputStream(con.getOutputStream());
+
+	             ds.writeBytes(twoHyphens + boundary + end);
+	             StringBuilder sb=new StringBuilder(); 
+	             for(Entry<String, String> entry :par.entrySet()) {//构建表单字段内容 
+
+	            	sb.append(twoHyphens); 
+
+	            	sb.append(boundary); 
+
+	            	sb.append("\r\n"); 
+
+	            	sb.append("Content-Disposition: form-data; name=\""+entry.getKey()+"\"\r\n\r\n"); 
+
+	            	sb.append(entry.getValue()); 
+
+	            	sb.append("\r\n"); 
+
+	            	} 
+	             
+	             ds.write(sb.toString().getBytes());
+	             
+	             Enumeration<String> en = listxp.keys();
+	       	      while(en.hasMoreElements()){
+	                 String ele = listxp.get((String) en.nextElement());
+	                 int index =ele.lastIndexOf('/');
+	                 String newName=ele.substring(index+1);
+	                 ds.writeBytes(twoHyphens + boundary + end);
+	                 ds.writeBytes("Content-Disposition: form-data; "
+	                		 
+	                     + "name=\"file1\";filename=\"" + newName + "\"" + end);
+	 ds.writeBytes("Content-Type: application/octet-stream; charset=UTF-8" + end);
+	                 ds.writeBytes(end);
+	                 FileInputStream fStream = new FileInputStream(ele);
+
+	                 /* 设置每次写入1024bytes */
+
+	                 int bufferSize = 1024;
+
+	                 byte[] buffer = new byte[bufferSize];
+
+	                 int length = 0;
+
+	                 /* 从文件读取数据至缓冲区 */
+
+	                 while ((length = fStream.read(buffer)) != -1) {
+
+	                     /* 将资料写入DataOutputStream中 */
+
+	                     ds.write(buffer, 0, length);
+
+	                 }
+
+	                 ds.writeBytes(end);
+
+	                 fStream.close();
+	                 }  
+	              ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
+	       	      ds.flush();
+	       	   ds.close();
+	       	   /* 取得Response内容 */
+	       	   int kode=con.getResponseCode();
+	       	 Log.i("result", con.getResponseCode()+"");
+	        if(kode==200)
+	         {
+	       	    InputStream is = con.getInputStream();
+
+	       	    int ch;
+
+	       	    StringBuffer b = new StringBuffer();
+
+	       	    while ((ch = is.read()) != -1) {
+
+	       	        b.append((char) ch);
+
+	       	    }
+	       	    String s=new String(b.toString().getBytes(),"utf-8");
+	       	     Log.i("result", "Response内容"+s);
+	       	    bb="巡检"+s.substring(s.lastIndexOf(" "));
+	       	    Log.i("result", "Response内容"+bb);
+	       	    
+	       	 issend="true";
+	           ContentValues values = new ContentValues();
+			  	
+				values.put(DFBG.BH,bb);
+				values.put(DFBG.TIME,sj);
+				values.put(DFBG.YCQKMC,ycqkmc);
+				values.put(DFBG.YZCD,yzcd);
+				values.put(DFBG.YCQKBW,ycqkbw);
+				values.put(DFBG.DLWZ,dlwz);
+				values.put(DFBG.SSGC,ssxngc);
+				values.put(DFBG.TBZHFWL,tbzhfwl);
+				values.put(DFBG.TBZHFWR,tbzhfwr);
+				values.put(DFBG.GCZHFWL,gczhfwl);
+				values.put(DFBG.GCZHFWR,gczhfwr);
+				values.put(DFBG.YCDDDMJGXS,ycdddmjgxs);
+				values.put(DFBG.MS,ms);
+				values.put(DFBG.YYFX,yyfx);
+				values.put(DFBG.JY,jy);
+//				values.put(DFBG.XDY,LoginActivity.UserName);
+			
+				values.put(DFBG.XPSM,xpsm);
+				 SQLiteDatabase	db= SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+				 Enumeration<String> en1 = listxp.keys();
+	     	      while(en1.hasMoreElements()){
+	     	    	
+	               String ele = listxp.get((String) en1.nextElement());
+	               ContentValues imagevalues = new ContentValues();
+	               imagevalues.put(Image.BH, bb);
+	   			imagevalues.put(Image.XP, ele);
+	   			 db.insert(Image.TABLENAME, null, imagevalues);
+	   			 db.close();
+	               }
+			
+	       	 con.disconnect();
+//	       	 db= SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+	       	 db.insert(DFBG.TABLENAME, null, values);
+	       	
+	       	 ContentValues xjbh = new ContentValues();
+	       	 xjbh.put(XJBH.NF, nf);
+	       	 xjbh.put(XJBH.BH, jtbh);
+	       	 db.insert(XJBH.TABLE_NAME, null, xjbh);
+	       	 db.close();
+	       	 }//       	   MessageBox.createAlertDialog("提示", "发送成功！", "返回", this).show();
+	         }catch (Exception e) {
+	        	 Log.i("result", e.toString());
+	         }
+//			
+			       
+	           }
+		   dialog.cancel();
+		   
+		  }
+		     
+		    }
+
+}

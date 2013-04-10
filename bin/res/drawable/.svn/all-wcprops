@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/gislocation/!svn/ver/5/bin/res/drawable
+END
+icon_loc_light.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gislocation/!svn/ver/5/bin/res/drawable/icon_loc_light.png
+END
+zoomout_disable.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/gislocation/!svn/ver/5/bin/res/drawable/zoomout_disable.png
+END
+btn_zoom_up_pressed.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_up_pressed.png
+END
+indoor_loc_suc.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gislocation/!svn/ver/5/bin/res/drawable/indoor_loc_suc.png
+END
+btn_zoom_up_disabled.png
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_up_disabled.png
+END
+btn_zoom_down_pressed.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_down_pressed.png
+END
+btn_zoom_up_normal.png
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_up_normal.png
+END
+btn_zoom_down_disabled.png
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_down_disabled.png
+END
+btn_zoom_down_normal.png
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_zoom_down_normal.png
+END
+btn_sync_normal.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_sync_normal.png
+END
+zoomout_press.png
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/gislocation/!svn/ver/5/bin/res/drawable/zoomout_press.png
+END
+btn_sync_press.png
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gislocation/!svn/ver/5/bin/res/drawable/btn_sync_press.png
+END

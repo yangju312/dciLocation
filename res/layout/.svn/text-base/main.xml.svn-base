@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".GISLocationActivity" 
+    android:background="@drawable/back"
+     style="@style/layout_full">
+ <com.esri.android.map.MapView
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+       
+        style="@style/layout_full"
+         >
+       
+    </com.esri.android.map.MapView>
+    
+
+<RelativeLayout
+    android:id="@+id/ck"
+    style="@style/layout_full"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/bak" >
+
+       <Button 
+           android:id="@+id/tbzh" 
+            android:layout_marginLeft="10dp"
+             android:layout_alignParentRight="true"
+            
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="130dp"
+         android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:hint="@string/tbzh"
+      android:textSize="15sp"
+     android:background="@drawable/input"
+     android:padding="0dp"
+     
+          />
+       
+
+        <ImageButton
+            android:id="@+id/dw"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            style="@style/layout_full"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            
+            android:contentDescription="@string/tbzh"
+            android:padding="0dp" />
+        <ImageButton
+         android:id="@+id/cxdw"
+        android:layout_toLeftOf="@id/dw"
+        android:layout_width="60dp"
+        android:layout_marginTop="5dp"
+     
+        android:layout_height="40dp"
+         android:padding="0dp"
+         style="@style/layout_full"
+       android:contentDescription="@string/tbzh"/>
+
+</RelativeLayout>
+   
+
+    <ImageButton
+        android:id="@+id/button1"
+        style="@style/layout_full"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+        android:layout_marginRight="70dp"
+        android:background="@drawable/btn_zoom_down"
+        android:contentDescription="@string/tbzh"
+        android:padding="0dp" />
+
+
+
+
+<ImageButton
+    android:id="@+id/button2"
+    style="@style/layout_full"
+    android:layout_width="50dp"
+    android:layout_marginBottom="30dp"
+    android:layout_height="35dp"
+   android:layout_marginRight="20dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:background="@drawable/btn_zoom_up"
+    android:contentDescription="@string/tbzh"
+    android:padding="0dp" />
+<RelativeLayout
+    android:id="@+id/cm" 
+ 
+       android:background="@drawable/bak1"
+       style="@style/layout_full"
+       android:orientation="vertical"
+       android:layout_width="35dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="60dp"
+    android:layout_marginLeft="20dp"
+      >
+     <ImageButton
+        android:id="@+id/cd"
+        style="@style/layout_full"
+        android:layout_width="35dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+    
+        android:layout_marginLeft="0dp"
+        android:background="#00000000"
+        android:contentDescription="@string/tbzh"
+        android:padding="0dp" />
+
+
+
+
+<ImageButton
+    android:id="@+id/zxj"
+    style="@style/layout_full"
+   android:layout_width="35dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+    
+        android:layout_marginLeft="0dp"
+    android:background="#00000000"
+    android:contentDescription="@string/tbzh"
+    android:padding="0dp" />
+</RelativeLayout>
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,1729 @@
+package Gis.namespace.Location;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.androidpn.client.ServiceManager;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+import Gis.namespace.Location.Secactivity.MyHandler;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+//import com.Dci.location.Updata.MainActivity.DBConnection;
+//import com.Dci.location.Updata.MainActivity.UserSchema;
+import com.esri.android.map.Callout;
+import com.esri.android.map.GraphicsLayer;
+import com.esri.android.map.InfoTemplate;
+import com.esri.android.map.MapView;
+//import com.esri.arcgis.android.samples.viewshed.R;
+
+//import com.esri.android.map.GraphicsLayer;
+
+import com.esri.android.map.ags.ArcGISDynamicMapServiceLayer;
+import com.esri.android.map.ags.ArcGISLocalTiledLayer;
+import com.esri.android.map.event.OnPanListener;
+import com.esri.android.map.event.OnSingleTapListener;
+import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.android.map.event.OnZoomListener;
+//import com.esri.android.map.ags.ArcGISTiledMapServiceLayer;
+//import com.esri.android.map.event.OnSingleTapListener;
+//import com.esri.android.map.event.OnStatusChangedListener;
+//import com.esri.core.geometry.Geometry;
+import com.esri.core.geometry.Envelope;
+import com.esri.core.geometry.Geometry;
+import com.esri.core.geometry.GeometryEngine;
+import com.esri.core.geometry.Point;
+import com.esri.core.geometry.SpatialReference;
+import com.esri.core.map.Graphic;
+import com.esri.core.symbol.PictureMarkerSymbol;
+import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
+
+//import com.example.android.db01.R;
+//import com.esri.core.symbol.SimpleFillSymbol;
+//import com.esri.core.symbol.SimpleMarkerSymbol;
+//import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
+public class GISLocationActivity extends Activity {
+	boolean iszoom = true;
+	OnClickListener onc;
+	MapView mMapView;
+	LinearLayout layout;
+	LocationManager loc = null;
+	Location GPSLocation=null;
+	Location NETLocation=null;
+	GraphicsLayer gLayer;
+	GraphicsLayer gpsLayer;
+//	Button btn;
+	Button ed;
+	String lastbh="";
+	private ProgressDialog pd;
+	Thread LocationThread;
+	Thread addlayerThread;
+	Handler addlayerhandler;
+	boolean isruning=true;
+	Handler handler;
+//	public static DBConnection helper;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+	public interface User {
+		String TABLE_NAME = "DL"; // Table Name
+		String ID = "_id"; // ID
+		String USER = "user"; // User Name
+		String PASS = "password"; 
+		
+		// Mail Address
+	}
+	public interface UserSchema {
+		String TABLE_NAME = "gz"; // Table Name
+		String ID = "_id"; // ID
+		String Time = "time"; // User Name
+		String LAT = "lat"; 
+		String LON = "lon";
+		// Mail Address
+	}
+	public interface TBZH {
+		String TABLE_NAME = "tbzh"; // Table Name
+		String ID = "_id"; // ID
+		String ZH = "zh"; // User Name
+		String X = "x"; 
+		String Y = "Y";
+		// Mail Address
+	}
+	public interface XJBH {
+		String TABLE_NAME = "xjbh"; // Table Name
+		String ID = "_id"; // ID
+		String NF = "year"; 
+		String BH = "bh"; 
+		
+		// Mail Address
+	}
+	public interface WZBH {
+		String TABLE_NAME = "xjbh"; // Table Name
+		String ID = "_id"; // ID
+		String NF = "year"; 
+		String BH = "bh"; 
+		
+		// Mail Address
+	}
+	 public interface Image {
+		    String ID = "_id";
+	    	String TABLE_NAME = "image"; 
+	    	String TABLENAME="xpfj";
+	    	String  BH ="bh"; 
+	    	String  XP ="xp";        
+			
+	    }
+	 public interface WZXP {
+		    String ID = "_id";
+	    	String TABLE_NAME = "image"; 
+	    	String TABLENAME="xpfj";
+	    	String  BH ="bh"; 
+	    	String  XP ="xp";        
+
+			
+	    }
+	 public interface  SETIP{
+		    String ID = "_id";
+	    	String TABLE_NAME = "setip"; 
+	    	String  IP ="ip"; 
+	    	String DK ="dk";        
+
+			
+	    }
+		public interface DFBG {
+			String ID = "_id";
+			String TABLE_NAME = "dfbg"; 
+			String TABLENAME="xjbg";
+			String  BH ="bh";        
+			String  TIME ="time";    
+			String  YCQKMC="ycqkmc";     
+			String  YZCD ="yzcd";      
+			String  YCQKBW ="ycqkbw";    
+			String  DLWZ="dlwz";      
+			String SSGC ="ssgc";      
+			String TBZHFWL ="tbzhfwl";  
+			String TBZHFWR ="tbzhfwr";   
+			String GCZHFWL="gczhfwl";    
+			String GCZHFWR ="gczhfwr";   
+			String YCDDDMJGXS="ycdddmjgxs"; 
+			String MS  ="ms";       
+			String  YYFX  ="yyfx";    
+			String JY   ="jy";      
+		    
+			
+			String XPSM="xdzz";
+			String FKYJ="fkyj";
+			// Mail Address
+		}
+		public interface WZJZ{
+			String ID = "_id";
+			String TABLE_NAME = "dfbg"; 
+			String TABLENAME="xjbg";
+			String  BH ="bh";        
+			String  TIME ="time";    
+			String  YCQKMC="ycqkmc";     
+			String  YZCD ="yzcd";      
+			String  YCQKBW ="ycqkbw";    
+			String  DLWZ="dlwz";      
+			String SSGC ="ssgc";      
+			String TBZHFWL ="tbzhfwl";  
+			String TBZHFWR ="thzhfwr";   
+			String GCZHFWL="gczhfwl";    
+			String GCZHFWR ="gczhfwr";   
+			String YCDDDMJGXS="ycdddmjgxs"; 
+			String MS  ="ms";       
+			String  YYFX  ="yyfx";    
+			String JY   ="jy";      
+			String XDY  ="xdy";      
+			String LXDH  ="lxdh"; 
+			String XPSM="xdzz";
+			String FKYJ="fkyj";
+			// Mail Address
+		}
+		ImageButton button1;
+		 ImageButton button2;
+		 double zhx=0;
+		 double zhy=0;
+		 String tbzh="";
+		 ImageButton btndw;
+		 ImageButton btncxdw;
+		 ImageButton btncd;
+		 ImageButton btnzxj;
+		 ProgressDialog  dialog;
+		 Callout callout;
+		  boolean isf=true;
+		  String titletext ;
+//         SQLiteDatabase db;
+ 
+	/** Called when the activity is first created. */
+	@SuppressLint("SdCardPath")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		
+		ManageActivity.ColseActivity("LoginActivity");
+		try{
+			setContentView(R.layout.main);
+		mMapView = (MapView) findViewById(R.id.map);
+		 button1=(ImageButton)findViewById(R.id.button1);
+//	        button1.setImageResource(R.drawable.jian);
+	        button1.setVisibility(View.VISIBLE);
+	        button1.getBackground().setAlpha(255);
+	        button2=(ImageButton)findViewById(R.id.button2);
+//	        button2.setImageResource(R.drawable.jia);
+	        button2.setVisibility(View.VISIBLE);
+	        button2.getBackground().setAlpha(255);
+	       btndw= (ImageButton)findViewById(R.id.dw);
+	       btncxdw=(ImageButton)findViewById(R.id.cxdw);
+	       btncd= (ImageButton)findViewById(R.id.cd);
+	       btnzxj=(ImageButton)findViewById(R.id.zxj);
+	       btncd.setImageResource(android.R.drawable.ic_menu_manage);
+	       btnzxj.setImageResource(android.R.drawable.ic_menu_camera);
+	       
+	       btndw.setImageResource(R.drawable.d);
+//	        btndw.setVisibility(View.VISIBLE);
+       btncxdw.setImageResource(R.drawable.cd);
+        Resources r = getBaseContext().getResources();
+       Drawable b=r.getDrawable(R.drawable.btncxdw);
+       btncxdw.setBackgroundDrawable(b);
+	        btncxdw.setVisibility(View.VISIBLE);
+	        ed=(Button)findViewById(R.id.tbzh);
+	        RelativeLayout rlMain;  
+//	        
+	        rlMain= (RelativeLayout) findViewById(R.id.cm);//布局  
+//	        btndw.getBackground().setAlpha(100);
+//	        rlMain.getBackground().setAlpha(100);
+//	        btncxdw.getBackground().setAlpha(100);
+	        btncd.getBackground().setAlpha(100);
+	        btnzxj.getBackground().setAlpha(100);
+//	        ed.getBackground().setAlpha(100);
+	        btndw.setBackgroundColor(Color.TRANSPARENT);
+	        btncxdw.setBackgroundColor(Color.TRANSPARENT);
+//	        btncd.setBackgroundColor(Color.TRANSPARENT);
+//	        btnzxj.setBackgroundColor(Color.TRANSPARENT);
+//	       ed.setBackgroundColor(Color.TRANSPARENT);
+	        //设置背景  
+//	        rlMain.setBackgroundColor(Color.TRANSPARENT);  
+	        btncd.setOnClickListener(new OnClickListener(){
+
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(GISLocationActivity.this,cdActivity.class);
+					startActivity(intent);
+				}});
+	        btnzxj.setOnClickListener(new OnClickListener(){
+
+				public void onClick(View v) {
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//					Intent intent = new Intent(Secactivity.this,CameraPreview.class);  
+					startActivityForResult(intent,1);  
+				}});
+	        ed.setOnClickListener(new OnClickListener(){
+
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					final EditText inputServer = new EditText(GISLocationActivity.this);
+					inputServer.setText(tbzh);
+			        AlertDialog.Builder builder = new AlertDialog.Builder(GISLocationActivity.this);
+			        builder.setTitle("请输入统编桩号").setIcon(R.drawable.tab_recent_nor).setView(inputServer)
+			                .setNegativeButton("取消", null);
+			        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+			            public void onClick(DialogInterface dialog, int which) {
+			            	try
+			            	{
+			            	tbzh=inputServer.getText().toString();
+			            String	where =TBZH.ZH+"='"+tbzh+"'";
+			            	SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+			       	     Cursor cur = null;
+			       	      cur=db.query(TBZH.TABLE_NAME, new String[]{TBZH.X,TBZH.Y
+			       	    		  },where, null, null, null, null);
+			       	      if(cur.getCount()>0)
+			       	      {cur.moveToFirst();
+			       	      String xx=cur.getString(0);
+			       	    	 zhx=Double.parseDouble(xx);
+			       	    	Log.i("result",zhx+""); 
+			       	    	zhy=Double.parseDouble(cur.getString(1));
+			       	    	ed.setText(inputServer.getText().toString());
+			       	      }
+			       	      
+			       	      else{
+			       	    	 MessageBox.createAlertDialog("提示", "没有此桩号，请重新输入！", "返回", GISLocationActivity.this).show();
+			       	      }
+			       	   db.close();
+			       	      cur.close();
+			            	}
+			            	catch(Exception e){
+
+			   	          	 e.printStackTrace();
+			   	          	 Log.i("result", e.getMessage()); 
+			   	         
+			   	          	 }
+			             }
+			        });
+			        builder.show();
+				}});
+	      
+	        loc = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+			if(!loc.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+	            Toast.makeText(this, "请开启GPS导航...", Toast.LENGTH_SHORT).show();
+	            //返回开启GPS导航设置界面
+	            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);   
+	            startActivityForResult(intent,0); 
+	            return;
+	        }
+			
+			SQLiteDatabase	db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+			ArcGISLocalTiledLayer local;
+			local = new ArcGISLocalTiledLayer("file:///mnt/sdcard/80/Layers");
+
+        String mapurl=ConfigManager.getInstance().getString("Mapurl");
+		final ArcGISDynamicMapServiceLayer dlayer = new ArcGISDynamicMapServiceLayer(
+				mapurl);
+		mMapView.setExtent(local.getExtent());
+		mMapView.addLayer(local);		
+		gLayer = new GraphicsLayer();
+		gpsLayer = new GraphicsLayer();
+		gLayer.setName("tbzh");
+		gpsLayer.setName("gps");
+		mMapView.addLayer(gLayer);
+		mMapView.addLayer(gpsLayer);
+		mMapView.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+			public void onFocusChange(View arg0, boolean arg1) {
+				// TODO Auto-generated method stub
+				
+			}});
+		mMapView.setOnPanListener(new OnPanListener(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void postPointerMove(float fromx, float fromy, float tox,
+					float toy) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void postPointerUp(float fromx, float fromy, float tox,
+					float toy) {
+				double scale=mMapView.getScale();
+				gLayer.removeAll();
+				if(scale<50000)
+				{try{
+					SQLiteDatabase db =SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+					 Geometry geo =mMapView.getExtent().copy();
+					 Envelope env = new Envelope();
+                     geo.queryEnvelope(env);
+					String where=TBZH.X+">'"+env.getXMin()+
+							"' and "+TBZH.X+"<'"+env.getXMax()+
+							"' and "+TBZH.Y+">'"+env.getYMin()+
+							"' and "+TBZH.Y+"<'"+env.getYMax()+"'";
+					 Cursor cu = null;
+		       	      cu=db.query(TBZH.TABLE_NAME, new String[]{TBZH.ZH,TBZH.X,TBZH.Y
+		       	    		  },where, null, null, null, null);
+		       	      cu.moveToFirst();
+		       	      for(int i=0;i<cu.getCount();i++)
+		       	      {
+		       	    	Point ptLatLon = new Point(Double.parseDouble(cu.getString(1)),
+		       	    			Double.parseDouble(cu.getString(2)));
+		       	    	
+		       	    	Map<String, Object> map =new HashMap<String,  Object>();
+		       	    	map.put("tbzh", cu.getString(0));
+						Resources r = getBaseContext().getResources();  
+						Drawable d = r.getDrawable(R.drawable.marker_station_active);
+						d.setAlpha(0);
+						
+						PictureMarkerSymbol picture=new PictureMarkerSymbol(d);
+						
+						Graphic g = new Graphic(ptLatLon,
+								picture, map,null);
+						// 经纬度坐标
+//						SpatialReference sr4326 = SpatialReference.create(4326);
+//						// 坐标转换
+//						Point centerPt = (Point) GeometryEngine.project(
+//								ptLatLon, sr4326,
+//								mMapView.getSpatialReference());
+//						gLayer.removeAll();
+						gLayer.addGraphic(g); 
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+		       	      }
+		       	      db.close();
+		       	      cu.close();
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					 Log.i("result", e.getMessage()); 
+						e.printStackTrace();
+					} 
+				}
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void prePointerMove(float fromx, float fromy, float tox,
+					float toy) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void prePointerUp(float fromx, float fromy, float tox,
+					float toy) {
+				// TODO Auto-generated method stub
+				
+			}});
+		mMapView.setOnZoomListener( new OnZoomListener(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void postAction(float pivotX, float pivotY, double factor) {
+				// TODO Auto-generated method stub
+				double scale=mMapView.getScale();
+				gLayer.removeAll();
+				if(scale<50000)
+				{try{
+					SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+					 Geometry geo =mMapView.getExtent().copy();
+					 Envelope env = new Envelope();
+                     geo.queryEnvelope(env);
+					String where=TBZH.X+">'"+env.getXMin()+
+							"' and "+TBZH.X+"<'"+env.getXMax()+
+							"' and "+TBZH.Y+">'"+env.getYMin()+
+							"' and "+TBZH.Y+"<'"+env.getYMax()+"'";
+					 Cursor cu = null;
+		       	      cu=db.query(TBZH.TABLE_NAME, new String[]{TBZH.ZH,TBZH.X,TBZH.Y
+		       	    		  },where, null, null, null, null);
+		       	      cu.moveToFirst();
+		       	      for(int i=0;i<cu.getCount();i++)
+		       	      {
+		       	    	Point ptLatLon = new Point(Double.parseDouble(cu.getString(1)),
+		       	    			Double.parseDouble(cu.getString(2)));
+		       	    	
+		       	    	Map<String, Object> map =new HashMap<String,  Object>();
+		       	    	map.put("tbzh", cu.getString(0));
+						Resources r = getBaseContext().getResources();  
+						Drawable d = r.getDrawable(R.drawable.marker_station_active);
+						d.setAlpha(0);
+						
+						PictureMarkerSymbol picture=new PictureMarkerSymbol(d);
+						
+						Graphic g = new Graphic(ptLatLon,
+								picture, map,null);
+						// 经纬度坐标
+//						SpatialReference sr4326 = SpatialReference.create(4326);
+//						// 坐标转换
+//						Point centerPt = (Point) GeometryEngine.project(
+//								ptLatLon, sr4326,
+//								mMapView.getSpatialReference());
+//						gLayer.removeAll();
+						gLayer.addGraphic(g); 
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+						cu.moveToNext();
+		       	      }
+		       	      db.close();
+		       	      cu.close();
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					 Log.i("result", e.getMessage()); 
+						e.printStackTrace();
+					} 
+				}
+			}
+
+			public void preAction(float pivotX, float pivotY, double factor) {
+				// TODO Auto-generated method stub
+				
+			}});
+		mMapView.setOnSingleTapListener(new OnSingleTapListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			int m_Char = 65;
+			public void onSingleTap(float x, float y) {
+				// TODO Auto-generated method stub
+				 if (!mMapView.isLoaded()) {
+		                return;
+		            }
+				 if (gLayer != null && gLayer.isInitialized() && gLayer.isVisible()) {
+		                Graphic result = null;
+		                // 检索当前 光标点（手指按压位置）的附近的 graphic对象
+		                result = GetGraphicsFromLayer(x, y, gLayer);
+		                if (result != null) {
+		                    // 获得附加特别的属性
+		                    String msgTag = (String) result
+		                            .getAttributeValue("tbzh");
+		                    callout=mMapView.getCallout();
+		                    if(msgTag==titletext)
+		                    {
+		                    	callout.hide();
+		                    }
+		                    else
+		                    {
+		                    Point pointVar = (Point) result.getGeometry();
+		                    // 显示提示
+		                    int TITLE_ID = 1;
+		    				
+		    		        layout = new LinearLayout(GISLocationActivity.this);
+		    				layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+		    						LayoutParams.WRAP_CONTENT));
+		    				layout.setOrientation(LinearLayout.VERTICAL);
+
+		    				// create TextView for the title
+		    				TextView	titleView = new TextView(GISLocationActivity.this);
+		    				titleView.setId(TITLE_ID);
+
+		    				// titleView.setText(title);
+		    				titleView.setTextColor(Color.RED);
+		    				titleView.setTextSize(15);
+		    				titleView.setText(msgTag);
+		    				titletext=msgTag;
+		    				layout.addView(titleView);
+
+		    				callout.show(pointVar,layout);
+		    				
+		    				  layout.setOnClickListener(onc);
+		                    }
+
+		                }// end if
+		            }// end if
+		           
+			}});
+//		db.delete(TBZH.TABLE_NAME, null, null);
+	     Cursor cur = null;
+	      cur=db.query(TBZH.TABLE_NAME, new String[]{TBZH.ZH
+	    		  },null, null, null, null, null);
+	      Log.i("result", cur.getCount()+""); 
+	      if(cur.getCount()<10)
+	    	  
+	      {  
+	    	  HandlerThread handlerThread1=new HandlerThread("handler_thread");
+	         handlerThread1.start();
+	         
+	         MyHandler handler1=new MyHandler(handlerThread1.getLooper());
+	         Message msg=handler1.obtainMessage();
+	       handler1.sendMessage(msg);
+	        dialog=new ProgressDialog(GISLocationActivity.this);
+	       dialog.setTitle("正在加载数据...");
+	       dialog.setMessage("请稍候！");
+	        dialog.show();     
+	    	 
+	    	 
+	    	  
+	      }
+		db.close();
+		cur.close();
+		
+//		addlayerThread= new Thread(new Runnable() {
+//			 public void run() {
+//				while(isf){
+//					
+//				 pd= ProgressDialog.show(GISLocationActivity.this, "正在加载", "正在加载…");
+//				 mMapView.setExtent(dlayer.getExtent());
+//					mMapView.addLayer(dlayer);		
+//					gLayer = new GraphicsLayer();
+//					mMapView.addLayer(gLayer);
+//					 Message msg = new Message();
+//					    msg.what = 0;
+//					    addlayerhandler.sendMessage(msg); 
+//					    isf=false;
+//			 }
+//			 }
+//		});
+//		addlayerThread.start();
+//		addlayerhandler =new  Handler() {
+//		@Override
+//        public void handleMessage(Message msg) {
+//			 super.handleMessage(msg);
+//		      //只要执行到这里就关闭对话框
+//		      pd.dismiss();
+//		}
+//		};
+		mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void onStatusChanged(Object source, STATUS status) {
+				// TODO Auto-generated method stub
+				  if (status.equals(STATUS.LAYER_LOADED)) {
+					  try{
+					  Location	GLocation=loc.getLastKnownLocation(LocationManager.GPS_PROVIDER );
+					  if(GLocation==null) return;
+						Point ptLatLon = new Point(GLocation.getLongitude(),
+								GLocation.getLatitude());
+						// 经纬度坐标
+						SpatialReference sr4326 = SpatialReference.create(4326);
+						// 坐标转换
+						Point centerPt = (Point) GeometryEngine.project(
+								ptLatLon, sr4326,
+								mMapView.getSpatialReference());
+						gLayer.removeAll();
+//						gLayer.addGraphic(g);
+						mMapView.zoomToScale(centerPt, 11550);
+					  } catch (Exception e) {
+							// TODO Auto-generated catch block
+							 Log.i("result", e.getMessage()); 
+								e.printStackTrace();
+							} 
+	                }
+			}
+			
+		});
+
+
+//		if(true){
+//		Location	GLocation=loc.getLastKnownLocation(LocationManager.GPS_PROVIDER );
+//		Point ptLatLon = new Point(GLocation.getLongitude(),
+//				GLocation.getLatitude());
+//		// 经纬度坐标
+//		SpatialReference sr4326 = SpatialReference.create(4326);
+//		// 坐标转换
+//		Point centerPt = (Point) GeometryEngine.project(
+//				ptLatLon, sr4326,
+//				mMapView.getSpatialReference());
+//		mMapView.zoomToScale(centerPt, 11550);}
+//		final SQLiteDatabase db = helper.getWritableDatabase();
+//      db.delete(UserSchema.TABLE_NAME, null, null);
+		button2.setOnClickListener(new
+				OnClickListener() {
+			public
+			void
+			onClick(View v) {
+				GISLocationActivity.this.mMapView.zoomin();
+			}
+			});
+		button1.setOnClickListener(new
+				OnClickListener() {
+			public
+			void
+			onClick(View v) {
+				GISLocationActivity.this.mMapView.zoomout();
+			}
+			});
+		
+//		 Cursor c = db.query(UserSchema.TABLE_NAME,  new String[] {UserSchema.Time}, null,null,null,null,null);
+//		 c.moveToFirst();
+//		 CharSequence[] list = new CharSequence[c.getCount()];
+//		 for (int i = 0; i < list.length; i++) {
+//		 list[i] = c.getString(0);
+//		 c.moveToNext();
+//		 }
+//		 c.close();
+//		final Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+//		 spinner.setAdapter(new ArrayAdapter<CharSequence>(this,
+//		 android.R.layout.simple_spinner_item, list));
+
+
+		
+		
+		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10,
+				new LocationListener() {
+
+					public void onLocationChanged(Location location) {
+						// TODO Auto-generated method stub
+//					GPSLocation=location;
+						Point ptLatLon = new Point(location.getLongitude(),
+								location.getLatitude());
+						// 经纬度坐标
+						SpatialReference sr4326 = SpatialReference.create(4326);
+						// 坐标转换
+						Point centerPt = (Point) GeometryEngine.project(
+								ptLatLon, sr4326,
+								mMapView.getSpatialReference());
+						
+						Resources r = getBaseContext().getResources();  
+						Drawable d = r.getDrawable(R.drawable.icon_loc_light);
+						d.setAlpha(0);
+						PictureMarkerSymbol picture=new PictureMarkerSymbol(d);
+						
+						Graphic g = new Graphic(centerPt,
+								picture);
+						
+						gLayer.removeAll();
+						gLayer.addGraphic(g);
+						
+//						if (iszoom) {
+//							mMapView.zoomToScale(centerPt, 11550);
+//							iszoom = false;
+//						}
+						ContentValues values = new ContentValues();
+						values.put(UserSchema.Time,
+								sdf.format(new Date(location.getTime())));
+						values.put(UserSchema.LAT, location.getLatitude());
+						values.put(UserSchema.LON, location.getLongitude());
+					    SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+						db.insert(UserSchema.TABLE_NAME, null, values);
+						db.close();
+						
+						HttpClient httpclient = new DefaultHttpClient();
+						
+						  String url="http://"+LoginActivity.setip+":"+LoginActivity.setdk+"/androidserver/servlet/TestServlet";
+	                         HttpPost httppost = new HttpPost(url);
+						 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3); 
+						 nameValuePairs.add(new BasicNameValuePair("userid", LoginActivity.id+"")); 
+						 nameValuePairs.add(new BasicNameValuePair("x", centerPt.getX()+"")); 
+						 nameValuePairs.add(new BasicNameValuePair("y", centerPt.getY()+""));
+						 HttpResponse response; 
+						 try {
+							httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+							response=httpclient.execute(httppost); 
+							if (response.getStatusLine().getStatusCode() == 200) {  
+				                // 获取返回的数据  
+				                String result = EntityUtils.toString(response.getEntity(), "UTF-8");  
+				                Log.i("HttpPost", "HttpPost方式请求成功，返回数据如下：");  
+				                Log.i("result", result); 
+//				                Toast.makeText(GISLocationActivity.this, result,Toast.LENGTH_LONG).show();
+				            } else {  
+				                Log.i("HttpPost", "HttpPost方式请求失败");  
+				            }  
+							 //Toast.makeText(GISLocationActivity.this, response.toString(),Toast.LENGTH_LONG).show();
+//							 Log.v("response text", response.);     
+							 
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ClientProtocolException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+						
+					}
+
+					public void onProviderDisabled(String provider) {
+						// TODO Auto-generated method stub
+
+					}
+
+					public void onProviderEnabled(String provider) {
+						// TODO Auto-generated method stub
+
+					}
+
+					public void onStatusChanged(String provider, int status,
+							Bundle extras) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+		btndw.setOnClickListener(new
+				OnClickListener() {
+			public
+			void
+			onClick(View v) {
+				Location	GLocation=loc.getLastKnownLocation(LocationManager.GPS_PROVIDER );
+				if(GLocation==null) return;
+				Point ptLatLon = new Point(GLocation.getLongitude(),
+						GLocation.getLatitude());
+				// 经纬度坐标
+				SpatialReference sr4326 = SpatialReference.create(4326);
+				// 坐标转换
+				Point centerPt = (Point) GeometryEngine.project(
+						ptLatLon, sr4326,
+						mMapView.getSpatialReference());
+				Resources r = getBaseContext().getResources();  
+				Drawable d = r.getDrawable(R.drawable.icon_loc_light); 
+				PictureMarkerSymbol picture=new PictureMarkerSymbol(d);
+				
+				Graphic g = new Graphic(centerPt,
+						picture);
+//				gLayer.removeAll();
+				gLayer.addGraphic(g);
+				mMapView.zoomToScale(centerPt, 11550);
+				Log.i("result", centerPt.getX()+"--"+centerPt.getY()+"--"+mMapView.getScale()+mMapView.getSpatialReference().getID()); 
+					
+				
+				
+			}
+			});
+		btncxdw.setOnClickListener(new
+				OnClickListener() {
+			public
+			void
+			onClick(View v) {
+				if(zhx==0)
+				{
+					 MessageBox.createAlertDialog("提示", "请输入统编桩号！", "返回", GISLocationActivity.this).show();
+				}
+				else
+				{Point ptLatLon = new Point(zhx,
+						zhy);
+				Resources r = getBaseContext().getResources();  
+				Drawable d = r.getDrawable(R.drawable.marker_station_active);
+				d.setAlpha(0);
+				
+				PictureMarkerSymbol picture=new PictureMarkerSymbol(d);
+				
+				Graphic g = new Graphic(ptLatLon,
+						picture);
+				// 经纬度坐标
+//				SpatialReference sr4326 = SpatialReference.create(4326);
+//				// 坐标转换
+//				Point centerPt = (Point) GeometryEngine.project(
+//						ptLatLon, sr4326,
+//						mMapView.getSpatialReference());
+//				gLayer.removeAll();
+				gLayer.addGraphic(g);
+				mMapView.zoomToScale(ptLatLon, 10000);
+				try
+				{	 int TITLE_ID = 1;
+				 callout=mMapView.getCallout();
+		        layout = new LinearLayout(GISLocationActivity.this);
+				layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+						LayoutParams.WRAP_CONTENT));
+				layout.setOrientation(LinearLayout.VERTICAL);
+
+				// create TextView for the title
+				TextView titleView = new TextView(GISLocationActivity.this);
+				titleView.setId(TITLE_ID);
+
+				// titleView.setText(title);
+				titleView.setTextColor(Color.RED);
+				titleView.setTextSize(15);
+				titleView.setText(tbzh);
+				
+				titletext=tbzh;
+				layout.addView(titleView);
+//				btngettzbh=new Button(GISLocationActivity.this);
+//				btngettzbh.setText("详细属性");
+//				layout.addView(btngettzbh);
+//				 View v1= LayoutInflater.from(GISLocationActivity.this).inflate(R.layout.callout, null);
+//				 btngettzbh=(Button)findViewById(R.id.gettzbh);
+//                   tex=(TextView)findViewById(R.id.countyname);
+//				 tex.setText(tbzh);
+//				 callout.setCoordinates(ptLatLon);
+//				callout.setContent(v1);
+//				callout.refresh(ptLatLon,layout);
+				
+				callout.show(ptLatLon,layout);
+				
+				  layout.setOnClickListener(onc);
+
+						
+				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+//				 PointItemizedOverlay overlay = new PointItemizedOverlay(drawable);
+//				    //设置显示/隐藏泡泡的监听器
+//				    overlay.setOnFocusChangeListener(onFocusChangeListener);
+//				    overlay.addOverlay(/*你自己的overlayItem*/);
+//				    overlay.addOverlay(/*你自己的overlayItem*/);
+//				    overlay.addOverlay(/*你自己的overlayItem*/);	
+				}
+			}
+			});
+		 onc=new OnClickListener(){
+
+			@SuppressWarnings("unchecked")
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				HttpClient httpclient = new DefaultHttpClient();
+				  String url="http://"+LoginActivity.setip+":"+LoginActivity.setdk+"/androidserver/servlet/tbzhServlet";
+	              HttpPost httppost = new HttpPost(url);
+//	              httppost.addHeader("Content-Type","text/html");
+//	              httppost.addHeader("charset",HTTP.UTF_8);
+				 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+			 titletext=changeToUnicode(titletext);
+				 nameValuePairs.add(new BasicNameValuePair("tbzh", titletext)); 			
+				 HttpResponse response; 
+				 try {
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+					response=httpclient.execute(httppost); 
+					if (response.getStatusLine().getStatusCode() == 200) {  
+		                // 获取返回的数据  
+//		                String result = EntityUtils.toString(response.getEntity(), "UTF-8");  
+		                HttpEntity resEntity = response.getEntity();
+		        		if (resEntity != null) {
+//		        			        System.out.println(EntityUtils.toString(resEntity,"utf-8"));
+		        			  StringEntity my_entity=new StringEntity(EntityUtils.toString(resEntity), "utf-8");
+		        			   String result=EntityUtils.toString(my_entity); 
+		        			   JSONArray jsonArr = new JSONObject(result).getJSONArray("values");
+		        			   JSONObject jsonObj=(JSONObject)jsonArr.get(0);
+		        			   ScrollView sc=new ScrollView(GISLocationActivity.this);
+		        			 
+		        			  TableLayout tlayout = new TableLayout(GISLocationActivity.this);
+//		        			  tlayout.setColumnShrinkable(3, false);
+//		        			  tlayout.setScrollContainer(true);
+		        			 
+							Iterator<String> iterator=jsonObj.keys();
+							while (iterator.hasNext())
+							{
+								String column=iterator.next();
+								 TableRow tr1 =loadtable(column,jsonObj.get(column).toString());
+								 tlayout.addView(tr1,new TableLayout.LayoutParams(
+			        	                    LayoutParams.FILL_PARENT, 
+			        	                    LayoutParams.WRAP_CONTENT));
+							}
+		        			  sc.addView(tlayout);
+		        			  AlertDialog.Builder builder = new AlertDialog.Builder(GISLocationActivity.this);
+		      		        builder.setTitle("详细属性").setIcon(null).setView(sc)
+		      		                .setNegativeButton("返回", null);
+		      		      builder.show();
+		        		}
+
+		            } else {  
+		                Log.i("HttpPost", "HttpPost方式请求失败");  
+		            }  
+
+				}  catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}};
+//        ServiceManager serviceManager = new ServiceManager(this);
+//        serviceManager.setNotificationIcon(R.drawable.notification);
+//        serviceManager.startService();
+//		handler =new  Handler() {
+//			@Override
+//            public void handleMessage(Message msg) {
+//                switch (msg.what) {
+//                case 0:
+//                	GPSLocation.reset();
+//                	GPSLocation = loc.getLastKnownLocation( LocationManager.GPS_PROVIDER );
+////					NETLocation=loc.getLastKnownLocation( android.location.LocationManager.NETWORK_PROVIDER );
+////					if (isBetterLocation(GPSLocation, NETLocation))
+////					{
+//						Point ptLatLon = new Point(GPSLocation.getLongitude(),
+//								GPSLocation.getLatitude());
+//						// 经纬度坐标
+//						SpatialReference sr4326 = SpatialReference.create(4326);
+//						// 坐标转换
+//						Point centerPt = (Point) GeometryEngine.project(
+//								ptLatLon, sr4326,
+//								mMapView.getSpatialReference());
+//						Graphic g = new Graphic(centerPt,
+//								new SimpleMarkerSymbol(Color.RED, 10,
+//										STYLE.CIRCLE));
+//						gLayer.addGraphic(g);
+//						if (iszoom) {
+//							mMapView.zoomToScale(centerPt, 11550);
+//							iszoom = false;
+//						}
+//						ContentValues values = new ContentValues();
+//						values.put(UserSchema.Time,
+//								sdf.format(new Date(GPSLocation.getTime())));
+//						values.put(UserSchema.LAT, GPSLocation.getLatitude());
+//						values.put(UserSchema.LON, GPSLocation.getLongitude());
+//					    SQLiteDatabase db = helper.getWritableDatabase();
+//						db.insert(UserSchema.TABLE_NAME, null, values);
+//						db.close();
+//						
+//						HttpClient httpclient = new DefaultHttpClient();
+//						    String url="http://"+LoginActivity.setip+":8080/androidserver/servlet/TestServlet";
+//	                        HttpPost httppost = new HttpPost("url");
+//						 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4); 
+//						 nameValuePairs.add(new BasicNameValuePair("ower", GPSLocation.getProvider())); 
+//						 nameValuePairs.add(new BasicNameValuePair("time", sdf1.format(new Date(GPSLocation.getTime())))); 
+//						 nameValuePairs.add(new BasicNameValuePair("lon", GPSLocation.getLongitude()+"")); 
+//						 nameValuePairs.add(new BasicNameValuePair("lat", GPSLocation.getLatitude()+""));
+//						 nameValuePairs.add(new BasicNameValuePair("timer", sdf.format(new Date(GPSLocation.getTime())))); 
+//						 HttpResponse response; 
+//						 try {
+//							httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//							response=httpclient.execute(httppost); 
+//							if (response.getStatusLine().getStatusCode() == 200) {  
+//					            // 获取返回的数据  
+//					            String result = EntityUtils.toString(response.getEntity(), "UTF-8");  
+//					            Log.i("HttpPost", "HttpPost方式请求成功，返回数据如下：");  
+//					            Log.i("result", result); 
+//					            Toast.makeText(GISLocationActivity.this, result,Toast.LENGTH_LONG).show();
+//					        } else {  
+//					            Log.i("HttpPost", "HttpPost方式请求失败");  
+//					        }  
+//							 //Toast.makeText(GISLocationActivity.this, response.toString(),Toast.LENGTH_LONG).show();
+////								 Log.v("response text", response.);     
+//							 
+//						} catch (UnsupportedEncodingException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (ClientProtocolException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} 
+////					}
+////					else
+////					{
+////						Point ptLatLon = new Point(NETLocation.getLongitude(),
+////								NETLocation.getLatitude());
+////						// 经纬度坐标
+////						SpatialReference sr4326 = SpatialReference.create(4326);
+////						// 坐标转换
+////						Point centerPt = (Point) GeometryEngine.project(
+////								ptLatLon, sr4326,
+////								mMapView.getSpatialReference());
+////						Graphic g = new Graphic(centerPt,
+////								new SimpleMarkerSymbol(Color.RED, 10,
+////										STYLE.CIRCLE));
+////						gLayer.addGraphic(g);
+////						if (iszoom) {
+////							mMapView.zoomToScale(centerPt, 11550);
+////							iszoom = false;
+////						}
+////						ContentValues values = new ContentValues();
+////						values.put(UserSchema.Time,
+////								sdf.format(new Date(NETLocation.getTime())));
+////						values.put(UserSchema.LAT, NETLocation.getLatitude());
+////						values.put(UserSchema.LON, NETLocation.getLongitude());
+////					    SQLiteDatabase db = helper.getWritableDatabase();
+////						db.insert(UserSchema.TABLE_NAME, null, values);
+////						db.close();
+////						
+////						HttpClient httpclient = new DefaultHttpClient();
+//		                   String url="http://"+LoginActivity.setip+":8080/androidserver/servlet/TestServlet";
+//  						   HttpPost httppost = new HttpPost("url");
+////						 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4); 
+////						 nameValuePairs.add(new BasicNameValuePair("ower", NETLocation.getProvider())); 
+////						 nameValuePairs.add(new BasicNameValuePair("time", sdf1.format(new Date(NETLocation.getTime())))); 
+////						 nameValuePairs.add(new BasicNameValuePair("lon", NETLocation.getLongitude()+"")); 
+////						 nameValuePairs.add(new BasicNameValuePair("lat", NETLocation.getLatitude()+""));
+////						 nameValuePairs.add(new BasicNameValuePair("timer", sdf.format(new Date(NETLocation.getTime())))); 
+////						 HttpResponse response; 
+////						 try {
+////							httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+////							response=httpclient.execute(httppost); 
+////							if (response.getStatusLine().getStatusCode() == 200) {  
+////					            // 获取返回的数据  
+////					            String result = EntityUtils.toString(response.getEntity(), "UTF-8");  
+////					            Log.i("HttpPost", "HttpPost方式请求成功，返回数据如下：");  
+////					            Log.i("result", result); 
+////					            Toast.makeText(GISLocationActivity.this, result,Toast.LENGTH_LONG).show();
+////					        } else {  
+////					            Log.i("HttpPost", "HttpPost方式请求失败");  
+////					        }  
+////							 //Toast.makeText(GISLocationActivity.this, response.toString(),Toast.LENGTH_LONG).show();
+//////								 Log.v("response text", response.);     
+////							 
+////						} catch (UnsupportedEncodingException e) {
+////							// TODO Auto-generated catch block
+////							e.printStackTrace();
+////						} catch (ClientProtocolException e) {
+////							// TODO Auto-generated catch block
+////							e.printStackTrace();
+////						} catch (IOException e) {
+////							// TODO Auto-generated catch block
+////							e.printStackTrace();
+////						} 
+////					}
+//					 break;
+//                }
+//            }
+//		};
+//		LocationThread= new Thread(new Runnable() {
+//			 public void run() {
+//				 while(isruning)
+//				 {
+//					 
+//					try {
+//						Thread.currentThread();
+//						Thread.sleep(60000);
+//						 Message msg = new Message();
+//	                       
+//	                        msg.what = 0;
+//	                        handler.sendMessage(msg);
+//						
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					 
+//				 }
+//				 
+//			 }
+//		});
+//		LocationThread.start();
+		
+		
+//		 Intent intent =new Intent(GISLocationActivity.this,
+//		 alarmreceiver.class);
+//		 intent.setAction("repeating");
+//		 PendingIntent sender=PendingIntent
+//		 .getBroadcast(GISLocationActivity.this, 0, intent, 0);
+//		 //开始时间
+//		 long firstime=SystemClock.elapsedRealtime();
+//		
+//		 AlarmManager am=(AlarmManager)getSystemService(ALARM_SERVICE);
+//		
+//		 am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP
+//		 , firstime, 60*1000, sender);
+		}
+		 catch (Exception e) {
+				// TODO Auto-generated catch block
+			 Log.i("result", e.getMessage()); 
+				e.printStackTrace();
+			} 
+		ManageActivity.addActiviy("GISLocationActivity", GISLocationActivity.this);
+	}
+	 private static final int TWO_MINUTES = 1000 * 1 * 2;
+	protected boolean isBetterLocation(Location location,
+    		Location currentBestLocation)
+    		{
+    		if (currentBestLocation == null)
+    		{
+    		// A new location is always better than no location
+    		return true;
+    		}
+
+
+    		// Check whether the new location fix is newer or older
+    		long timeDelta = location.getTime() - currentBestLocation.getTime();
+    		boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+    		boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+    		boolean isNewer = timeDelta > 0;
+
+
+    		// If it's been more than two minutes since the current location, use
+    		// the new location
+    		// because the user has likely moved
+    		if (isSignificantlyNewer)
+    		{
+    		return true;
+    		// If the new location is more than two minutes older, it must be
+    		// worse
+    		}
+    		else if (isSignificantlyOlder)
+    		{
+    		return false;
+    		}
+
+
+    		// Check whether the new location fix is more or less accurate
+    		int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation
+    		.getAccuracy());
+    		boolean isLessAccurate = accuracyDelta > 0;
+    		boolean isMoreAccurate = accuracyDelta < 0;
+    		boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+
+    		// Check if the old and new location are from the same provider
+    		boolean isFromSameProvider = isSameProvider(location.getProvider(),
+    		currentBestLocation.getProvider());
+
+
+    		// Determine location quality using a combination of timeliness and
+    		// accuracy
+    		if (isMoreAccurate)
+    		{
+    		return true;
+    		}
+    		else if (isNewer && !isLessAccurate)
+    		{
+    		return true;
+    		}
+    		else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider)
+    		{
+    		return true;
+    		}
+    		return false;
+    		}
+	 private boolean isSameProvider(String provider1, String provider2)
+	    {
+	    if (provider1 == null)
+	    {
+	    return provider2 == null;
+	    }
+	    return provider1.equals(provider2);
+	    }
+	 @SuppressLint("SdCardPath")
+	@Override  
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
+		 
+		 super.onActivityResult(requestCode, resultCode, data); 
+	        
+         String sdStatus = Environment.getExternalStorageState();  
+         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用  
+             Log.i("TestFile",  
+                     "SD card is not avaiable/writeable right now.");  
+             return;  
+         } 
+        
+         	if (resultCode != Activity.RESULT_OK)  
+	            return;  
+         Date date = new Date(System.currentTimeMillis());  
+         SimpleDateFormat dateFormat = new SimpleDateFormat(  
+                 "_yyyyMMdd-HHmm");
+         String name="xc"+dateFormat.format(date) + ".jpg";
+         //	            Toast.makeText(this, name, Toast.LENGTH_LONG).show();  
+//         byte[] bb = data.getByteArrayExtra("pic"); 
+//         Bitmap bitmap =null;
+//         if (bb == null) { return;}
+//         bitmap= BitmapFactory.decodeByteArray(bb, 0, bb.length);// 获取相机返回的数据，并转换为Bitmap图片格式  
+//         FileOutputStream b = null;  
+         
+         Bundle bundle = data.getExtras();
+			Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+			BufferedOutputStream bos =null;
+
+        //???????????????????????????????为什么不能直接保存在系统相册位置呢？？？？？？？？？？？？  
+         File file = new File("/sdcard/xc/");  
+         file.mkdirs();// 创建文件夹  
+         String fileName = "/sdcard/xc/"+name; 
+//         File file1 = new File(fileName); 
+//         file1.mkdir();
+         try {  
+         	bos= new BufferedOutputStream(new FileOutputStream(fileName)); 
+				//b = new FileOutputStream(fileName);
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);// 把数据写入文件
+
+         }catch(Exception e){
+
+        	 e.printStackTrace();
+        	 Log.i("result", e.getMessage()); 
+
+        	 }
+	 }
+	 @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        /*
+	         * 
+	         * add()方法的四个参数，依次是：
+	         * 
+	         * 1、组别，如果不分组的话就写Menu.NONE,
+	         * 
+	         * 2、Id，这个很重要，Android根据这个Id来确定不同的菜单
+	         * 
+	         * 3、顺序，那个菜单现在在前面由这个参数的大小决定
+	         * 
+	         * 4、文本，菜单的显示文本
+	         */
+
+	        menu.add(Menu.NONE, Menu.FIRST + 1, 1, "菜单").setIcon(
+
+	        android.R.drawable.ic_menu_manage);
+
+	        // setIcon()方法为菜单设置图标，这里使用的是系统自带的图标，同学们留意一下,以
+
+	        // android.R开头的资源是系统提供的，我们自己提供的资源是以R开头的
+
+//	        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "保存").setIcon(
+//
+//	        android.R.drawable.ic_menu_edit);
+
+	        menu.add(Menu.NONE, Menu.FIRST + 3, 3, "完工报告").setIcon(
+
+	        android.R.drawable.ic_menu_add);
+
+	        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "巡查上报").setIcon(
+
+	        android.R.drawable.ic_menu_add);
+
+	        menu.add(Menu.NONE, Menu.FIRST + 4, 4, "历史查询").setIcon(
+
+	        android.R.drawable.ic_menu_info_details);
+
+	        menu.add(Menu.NONE, Menu.FIRST + 5,5, "系统设置").setIcon(
+
+	        android.R.drawable.ic_menu_set_as);
+	        menu.add(Menu.NONE, Menu.FIRST + 6,6, "退出系统").setIcon(
+
+	    	        android.R.drawable.star_off);
+
+	        return true;
+
+	    }
+
+	    @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+
+	        case Menu.FIRST + 1:
+
+	           Intent intentwz =new Intent(GISLocationActivity.this,cdActivity.class);
+			     startActivity(intentwz);
+
+	            break;
+
+	        case Menu.FIRST + 2:
+	        	Intent intent =new Intent(GISLocationActivity.this,Secactivity.class);
+			     startActivity(intent);
+//	            Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
+
+	            break;
+
+	        case Menu.FIRST + 3:
+//	        	 final EditText inputServer = new EditText(GISLocationActivity.this);
+//	        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//	        builder.setTitle("请输入统编桩号").setIcon(android.R.drawable.ic_dialog_info).setView(inputServer)
+//	                .setNegativeButton("Cancel", null);
+//	        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//
+//	            public void onClick(DialogInterface dialog, int which) {
+//	               inputServer.getText().toString();
+//	             }
+//	        });
+//	        builder.show();
+             
+	            break;
+
+	        case Menu.FIRST + 4:
+
+	        	Intent query = new Intent(GISLocationActivity.this,Qureyactivity.class);  
+			    startActivity(query); 
+
+	            break;
+
+	        case Menu.FIRST + 5:
+
+	        	ServiceManager.viewNotificationSettings(GISLocationActivity.this);
+
+	            break;
+
+	        case Menu.FIRST + 6:
+	        	TextView tex=new TextView(GISLocationActivity.this);
+	        tex.setText("是否退出本系统!");
+	        tex.setTextSize(20);
+	        tex.setGravity(Gravity.CENTER);
+	        	   AlertDialog.Builder builder = new AlertDialog.Builder(GISLocationActivity.this);
+	        builder.setTitle("退出").setIcon(
+
+	    	        android.R.drawable.ic_delete).setView(tex)
+	                .setNegativeButton("取消", null);
+	        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+	            public void onClick(DialogInterface dialog, int which) {
+	            	
+	            	ManageActivity.ColseallActivity();
+	            }
+	        });
+	        builder.show();
+	        
+
+	            break;
+
+	        }
+
+	        return false;
+
+	    }
+
+	    @Override
+	    public void onOptionsMenuClosed(Menu menu) {
+//	        Toast.makeText(this, "选项菜单关闭了", Toast.LENGTH_LONG).show();
+	    }
+	    public static String changeToUnicode(String str){
+	    	StringBuffer strBuff = new StringBuffer();
+	    	for(int i=0;i<str.length();i++){
+	    	String temp = Integer.toHexString(str.charAt(i));
+	    	if(temp.length()!=4){
+	    	temp = "00"+temp;
+	    	}
+	    	if(temp.equals("00d")){
+	    	temp = "0"+temp;
+	    	}
+	    	if(temp.equals("00a")){
+	    	temp = "0"+temp;
+	    	}
+	    	strBuff.append(temp.substring(0, temp.length()-2));
+	    	strBuff.append(temp.substring(temp.length()-2, temp.length()));
+	    	}
+	    	String returnData = strBuff.toString();
+	    	return returnData;
+	    	}
+
+	    @Override
+	    public boolean onPrepareOptionsMenu(Menu menu) {
+//	        Toast.makeText(this,
+//	                "选项菜单显示之前onPrepareOptionsMenu方法会被调用，你可以用此方法来根据打当时的情况调整菜单",
+//	                Toast.LENGTH_LONG).show();
+
+	        // 如果返回false，此方法就把用户点击menu的动作给消费了，onCreateOptionsMenu方法将不会被调用
+
+	        return true;
+
+	    }
+	    Button btngettzbh;
+		 TextView tex;
+	 public View   loadView(String bh)
+	 {
+		 View v= LayoutInflater.from(GISLocationActivity.this).inflate(R.layout.callout, null);
+		 btngettzbh=(Button)findViewById(R.id.gettzbh);
+		 TextView tex=(TextView)findViewById(R.id.countyname);
+		 tex.setText(bh);
+		return v;
+		 
+	 }
+	 @SuppressWarnings("unused")
+	private Graphic GetGraphicsFromLayer(double xScreen, double yScreen,
+	            GraphicsLayer layer) {
+	        Graphic result = null;
+	        try {
+	            int[] idsArr = layer.getGraphicIDs();
+	            double x = xScreen;
+	            double y = yScreen;
+	            for (int i = 0; i < idsArr.length; i++) {
+	                Graphic gpVar = layer.getGraphic(idsArr[i]);
+	                if (gpVar != null) {
+	                    Point pointVar = (Point) gpVar.getGeometry();
+	                    pointVar = mMapView.toScreenPoint(pointVar);
+	                    double x1 = pointVar.getX();
+	                    double y1 = pointVar.getY();
+	                    if (Math.sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1)) <= 25) {
+	                        result = gpVar;
+	                        break;
+	                    }
+	                }
+	            }
+	        } catch (Exception e) {
+	            return null;
+	        }
+	        return result;
+	    }
+	 public TableRow   loadtable(String zd,String vuale)
+	 {
+		 if(vuale.equals("null")||vuale.equals(null))
+	 {
+		 vuale=" ";
+	 }
+		 TableRow tr = new TableRow(GISLocationActivity.this);
+         tr.setLayoutParams(new LayoutParams(
+                        LayoutParams.FILL_PARENT, 
+                        LayoutParams.WRAP_CONTENT));
+         TextView tex1=new TextView(GISLocationActivity.this);
+         TextView tex2=new TextView(GISLocationActivity.this);
+         tex1.setText(zd);
+        
+         tex2.setText(vuale);
+         tr.addView(tex1);
+         tr.addView(tex2);
+		return tr;
+		 
+	 }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		isruning=false;
+		LocationThread.stop();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mMapView.pause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mMapView.unpause();
+	}
+	  class MyHandler extends Handler {
+		     
+		     public MyHandler(Looper looper){
+		      super(looper);
+		     }
+		     @SuppressLint("SdCardPath")
+			@Override
+		  public void handleMessage(Message msg) {
+		   // TODO Auto-generated method stub
+		   super.handleMessage(msg);
+		 
+			SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(LoginActivity.dataf, null); 
+			
+	    	  String filepath="/sdcard/ZH/tbzh.txt";
+	    	  try
+	    	  {
+	    	  File file = new File(filepath);
+	    	   if (file.isDirectory())
+	            {
+	                Log.d("TestFile", "The File doesn't not exist.");
+	            }
+	    	   else
+	    	   {
+			FileInputStream fileInputStream =  new FileInputStream(file);
+			if(fileInputStream!=null)
+			{
+			InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "gbk");
+			BufferedReader reader = new BufferedReader(inputStreamReader);
+			String line;
+				while ((line = reader.readLine()) != null) {
+					String[] lines=line.split(",");
+					String inputbh=lines[1].substring(1, lines[1].length()-1);
+					  ContentValues values = new ContentValues();
+			    	  values.put(TBZH.ZH, inputbh);
+			    	  values.put(TBZH.X, lines[3]);
+			    	  values.put(TBZH.Y, lines[4]);
+		    	  db.insert(TBZH.TABLE_NAME, null, values);
+				}
+			}}
+	    	   db.close();
+	    	   }catch(Exception e){
+
+	          	 e.printStackTrace();
+	          	 Log.i("result", e.getMessage()); 
+
+	          	 }
+		   dialog.cancel();
+		     }}
+//	public class DBConnection extends SQLiteOpenHelper {
+//
+//		private static final String DATABASE_NAME = "LocationDB";
+//
+//		private static final int DATABASE_VERSION = 1;
+//
+//		DBConnection(Context ctx) {
+//			super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
+//
+//		}
+//
+//		public void onCreate(SQLiteDatabase db) {
+//			String sql = "CREATE TABLE " + UserSchema.TABLE_NAME + " ("
+//					+ UserSchema.ID + " INTEGER primary key autoincrement, "
+//					+ UserSchema.Time + " text not null, " + UserSchema.LAT
+//					+ " text not null, " + UserSchema.LON + " text not null "
+//					+ ");";
+//			// Log.i("haiyang:createDB=", sql);
+//			db.execSQL(sql);
+//		}
+//
+//		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//			// TODO Auto-generated method stub
+//		}
+//	}
+}

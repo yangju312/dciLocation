@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/back"
+    android:orientation="vertical"
+    tools:context=".GISLocationActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/bigback" >
+
+        <TextView
+            android:id="@+id/te1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/cxtjsz"
+            android:textColor="@color/txtcc"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/te3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="55dp"
+            android:gravity="center"
+            android:text="@string/xzxcy"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" >
+        </TextView>
+
+
+            <Spinner
+                android:id="@+id/spinnerxcy"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" 
+                android:layout_marginTop="95dp"
+            android:background="@drawable/bg_spinner"/>
+              <TextView
+            android:id="@+id/te2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="135dp"
+            android:gravity="center"
+            android:text="@string/xzbglx"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" >
+        </TextView>
+
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" 
+                android:layout_marginTop="175dp"
+            android:background="@drawable/bg_spinner"/>
+       
+
+        <TextView
+            android:id="@+id/checkbox1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="215dp"
+            android:button="@drawable/cb_check"
+            android:gravity="center"
+            android:text="@string/xzbh"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+ <TextView
+            android:id="@+id/xzqy"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="255dp"
+            
+            android:gravity="center"
+            android:text="@string/xzqy"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+       
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/xzqy"
+                android:layout_marginRight="10dp" 
+                 android:layout_marginTop="255dp"
+            android:background="@drawable/bg_spinner"/>
+        
+ <TextView
+            android:id="@+id/xzhd"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="295dp"
+            
+            android:gravity="center"
+            android:text="@string/xzqy"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+       
+            <Spinner
+                android:id="@+id/xchd"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/xzhd"
+                android:layout_marginRight="10dp" 
+                 android:layout_marginTop="295dp"
+            android:background="@drawable/bg_spinner"/>
+     
+        <TextView
+            android:id="@+id/checkbox2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="335dp"
+            android:button="@drawable/cb_check"
+            android:gravity="center"
+            android:text="@string/xzsjfw"
+            android:textColor="@color/txtcc"
+            android:textSize="15sp" />
+
+        <TableRow
+            android:id="@+id/databt"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="fill_parent"
+             android:layout_height="40dp"
+            
+            android:layout_marginTop="375dp" >
+
+            <Button
+                android:id="@+id/databtn1"
+                android:layout_height="40dp"
+                android:layout_weight="0.45"
+                android:background="@drawable/bak"
+                android:gravity="center"
+                android:text="@string/xzsj"
+                android:textColor="@color/txtcc"
+                android:textSize="15sp" />
+
+
+
+            <TextView
+                android:id="@+id/zz"
+                android:layout_height="40dp"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                android:text="@string/z"
+                android:textColor="@color/txtcc"
+                android:textSize="15sp" >
+
+            </TextView>
+
+            <Button
+                android:id="@+id/databtn2"
+                android:layout_height="40dp"
+                android:layout_weight="0.45"
+                android:background="@drawable/bak"
+                android:gravity="center"
+                android:text="@string/xzsj"
+                android:textColor="@color/txtcc"
+                android:textSize="15sp" />
+        </TableRow>
+
+        <Button
+            android:id="@+id/cx"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="425dp"
+            android:background="@drawable/query_btn_selector"
+            android:gravity="center"
+            android:text="@string/cx"
+            android:textColor="@color/txtcc"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
